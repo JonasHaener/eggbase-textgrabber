@@ -1,0 +1,300 @@
+@charset "utf-8";
+
+html {
+	font-size: 16px;
+	margin: 0;
+	padding: 0;
+}
+body {
+	background-color: #EEE;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 62.5%;
+	height: 100%;
+	min-width: 90em;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+
+}
+
+p, h1 {
+	padding: 0;
+	margin: 0;	
+}
+
+*{ box-sizing: border-box; }
+
+/********** Color / shadows *************/
+.bc-orange {
+	background-color: rgb(240, 169, 42) !important;
+}
+.bc-blue {
+	background-color: #09F !important;
+}
+.bc-blue-h:focus {
+	background-color: rgb(238, 241, 243) !important;
+}
+.bc-yellow {
+	background-color: #FF0 !important;
+}
+.bc-green {
+  background-color: rgb(125, 209, 46) !important;
+}
+
+.bc-grey-lighter {
+	background-color: #F6F6F6 !important;
+}
+
+.bc-grey {
+	background-color: rgb(236, 236, 236) !important;
+}
+
+.bc-grey-dark {
+	background-color: #4F4F4F !important;
+}
+
+.bc-purple {
+	background-color: #953cac !important;
+}
+
+.box-shadow {
+	box-shadow: #BCBCBC 1px 1px 1px !important;
+}
+
+/*********** Borders **********/
+.border-left {
+	border-left: thin, solid;
+}
+.border-right {
+	border-left: thin, solid;
+}
+.border-color-grey {
+	border-color: #BEBEBE;
+}
+
+
+
+
+/*********** Templates **************/
+
+.templ-content {
+	background-color: #FDFDFD;
+	padding: 0.3em;
+	min-height: 5em;
+}
+
+.templ-inp-content-cleaned {
+	border: 0;
+	font-size: 1.6em;
+	padding: 0 1em 1em 1em;
+	min-height: 10em;
+	max-width: 100%;
+	width: 100%;
+	
+	transition-property: min-height;
+	transition-duration: 1000ms;
+}
+
+
+.templ-inp-content-cleaned:focus {
+		min-height: 20em;
+	
+}
+
+
+.templ-content-cleaned-h {
+	background-color: #09F;
+}
+
+
+.s-cleaned-text-templ {
+	border-bottom: 1px solid #ABABAB;		
+}
+
+
+/******* Main structure *******/ 
+.s-float-left  {
+	/*float: left;*/
+	display: inline-block;
+	vertical-align: top;	
+}
+.s-marg-r-3per {
+	margin-right: 1em;
+}
+.s-width-50per {
+	
+}
+
+section {
+	border: thin rgb(224, 224, 224) solid;	
+	background-color: rgb(255, 255, 255);
+	padding: 1em 1em 2em 1em;
+	margin-bottom: 3em;
+	width: 40%;
+}
+
+
+
+
+
+
+
+/********* General ************/ 
+
+h3 {
+	font-size: 1.6em;
+	background: rgb(104, 104, 104);
+	color: #FFF;
+	box-shadow: #BCBCBC 1px 1px 1px;
+	padding: 0.5em 0.7em;
+}
+.inp-button {
+	background-color: #4F4F4F;
+	border: none;
+	border-right: solid #7C7C7C thin;
+	color: rgb(179, 179, 179);
+	font-size: 16px;
+	min-width: 10em;
+	padding: .5em;
+	margin: 0;
+}
+.inp-button:first-of-type {
+	border-left: solid #7C7C7C thin;
+}
+
+.inp-button:hover {
+	background-color: rgb(125, 209, 46);
+	color: #E4E4E4;
+
+}
+.label {
+	font-size: 1.3em;
+}
+
+
+
+
+
+
+/********* Header **************/ 
+
+header {
+	font-size: 0;
+	margin-bottom: 16px;
+}
+
+
+.headline {
+	color: rgb(179, 179, 179);
+	display: inline-block;
+	font-size: 16px;
+	font-weight: normal;
+	text-indent: 1em;
+	margin-right: 3em;
+}
+
+
+
+
+
+
+
+
+/********* Left section **************/ 
+
+.section-left {
+	margin-left: 1em;
+}
+
+.section-left 
+h3 {
+	background: rgb(104, 104, 104);
+	color: #FFF;
+	width: 100%;
+	padding: 0.6em 1em;
+}
+
+.inp-form-pa_text {
+	box-shadow: none;
+	background-color: #F6F6F6;
+	border: 0;
+	font-size: 1.6em;
+	max-width: 100%;
+	min-height: 10em;
+	padding: 1em;
+	width: 100%;
+	transition-property: height;
+	transition-duration: 1000ms;
+}
+
+
+.inp-form-pa_text:focus {
+	height: 20em;
+}
+
+
+
+
+.inp-select {
+
+}
+
+.result {
+
+}
+.result span {
+	color: #F00;
+}
+
+
+/********* Right section **************/ 
+
+.section-right {
+	padding-left: 3em;
+	min-width: 30%;
+}
+
+.section-right h3 {
+	width: 85%;
+	
+}
+
+.section-right input[type=text], 
+.section-right textarea  {
+	color: #1D1D1D;
+}
+
+.section-right 
+input[type=text] {
+	height: 2em;
+	margin-bottom: .5em;
+	padding-left: .5em; 
+	width: 85%;
+}
+.section-right 
+input[name=bn] {
+	width: 60%;
+}
+.section-right 
+select[name=language] {
+	height: 2em;
+	width: 25%;
+}
+
+.section-right 
+input[type=text]:focus {
+	background-color: rgb(238, 241, 243);
+}
+
+.section-right 
+textarea {
+	height: 5em;
+	max-width: 85%;
+	margin-bottom: 0.5em;
+	width: 85%;
+}
+.section-right 
+textarea:focus {
+	background-color: rgb(238, 241, 243);
+}
+

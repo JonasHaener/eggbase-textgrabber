@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/text-grabber.css">
+  <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+</head>
+<body>
+<!--Templates Start-->
+	<script id="cleaned-text-template" type="text/x-handlebars-template">
+  	<div class='s-cleaned-text-templ bc-grey-lighter box-shadow'>
+			<h3 class='templ-head bc-green'>Cleaned text</h3>
+			<textarea class="templ-inp-content-cleaned bc-grey-lighter js-inp-cleaned-text" disabled>{{result}}</textarea>
+		</div>	
+	</script>
+  <script id="pa-order-template" type="text/x-handlebars-template">
+  	<p class='templ-head bc-green'>Features</p>
+		<p class="templ-content">{{result}}</p>
+	</script>
+  <script id="techData-template" type="text/x-handlebars-template">
+  	<p class='templ-head bc-yellow'>Tech data</p>
+		<p class="templ-content">{{result}}</p>
+	</script>
+<!--Templates End-->
+	<header class="bc-grey-dark">
+			<h1 class="headline">PA@Templater</h1>
+ 			<button name="button-grabText" class="js-button-grabText inp-button" id="">Clean text</button>
+    	<button name="write-template" class="js-button-write-template inp-button" id="">Write template</button>
+    	<button name="save" class="js-button-save inp-button" id="">Save project</button>
+ 	</header>
+
+	<section class="section-left width-50per s-float-left s-marg-r-3per">
+			<div class="bc-grey-lighter box-shadow">
+  				<h3 class="bc-orange">Enter source text</h3>
+    			<textarea name="paText" id="paText" class="inp-form-pa_text js-paText"></textarea>
+  		</div> 
+	  	<div id="result" class="result js-result"></div>
+	</section>
+
+	<section class="section-right s-width-50per s-float-left">
+      <label class="label" for="select-saved-items">Choose saved item: </label>
+      <select name="select-saved-items" class="js-select-saved-items inp-select" id="select-saved-items">
+        	<option>Saved items</option>	
+      </select>
+
+      <h3>Product B/N:</h3>
+      <input type="text" name="bn" id="bn" class="js-bn" placeholder=" Enter BN"></input>
+      <select name="language" id="language" class="js-language">
+        	<option data-german="GER">German</option>
+        	<option data-english="ENG">English</option>
+      </select>
+  
+      <h3>Product name:</h3>
+      <input type="text" name="product_name" id="product_name" class="js-product-name" placeholder=" German product name"></input>
+      <br>
+      
+      <h3>Features:</h3>
+      <input type="text" name="feature_1" id="feature_1" class="bc-blue-h js-product-feature_1" placeholder=" Feature 1"></input>
+      <br>
+      <input type="text" name="feature_2" id="feature_2" class="js-product-feature_2" placeholder=" Feature 2"></input>
+      <br>
+      <input type="text" name="feature_3" id="feature_3" class="js-product-feature_3" placeholder=" Feature 3"></input>
+      <br>
+      <input type="text" name="feature_4" id="feature_4" class="js-product-feature_4" placeholder=" Feature 4"></input>
+      <br>
+      <input type="text" name="feature_5" id="feature_5" class="js-product-feature_5" placeholder=" Feature 5"></input>
+  
+      <h3>Customer text:</h3>
+      <textarea name="cutomer_text" id="customer_text" class="js-customer_text" placeholder=" Customer text"></textarea>
+    
+      <h3>Technical data:</h3>
+      <textarea name="techdata_custom" id="techdata_custom" class="js-techdata_custom" placeholder=" techdata_custom"></textarea>
+      <br>
+      <input type="text" name="techdata_dimensions" id="techdata_dimensions" class="js-techdata-dimensions" placeholder="Dimensions" data-prefix='Abmessungen (B x H x T):'></input>
+      <br>
+      <input type="text" name="techdata_weight" id="techdata_weight" class="js-techdata_weight" placeholder="Weight" data-prefix='Gewicht:'></input>
+      
+      <h3>Delivery contents:</h3>
+      <textarea name="delivery_custom" id="delivery_custom" class="js-delivery_custom" placeholder=" delivery_custom"></textarea>
+      <br> 
+      <input type="text" name="delivery_manual" id="delivery_manual" class="js-delivery_manual" value="Bedienungsanleitung"></input>     
+	</section>  
+  
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+  <script src="js/vendor/handlebars-1.0.0-rc.4.js"></script>
+  <script src="js/plugins.js"></script>
+  <script src="js/grabber.js"></script>
+</body>
+</html>
