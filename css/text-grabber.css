@@ -86,7 +86,7 @@ p, h1 {
 .templ-inp-content-cleaned {
 	border: 0;
 	font-size: 1.6em;
-	padding: 0 1em 1em 1em;
+	padding: 0.5em 1em 1em 0.5em;
 	min-height: 10em;
 	max-width: 100%;
 	width: 100%;
@@ -168,7 +168,7 @@ h3 {
 
 }
 .label {
-	font-size: 1.3em;
+	font-size: 1.6em;
 }
 
 
@@ -218,10 +218,11 @@ h3 {
 	box-shadow: none;
 	background-color: #F6F6F6;
 	border: 0;
+	
 	font-size: 1.6em;
 	max-width: 100%;
 	min-height: 10em;
-	padding: 1em;
+	padding: 0.5em 1em 1em 0.5em;
 	width: 100%;
 	transition-property: height;
 	transition-duration: 1000ms;
@@ -236,7 +237,8 @@ h3 {
 
 
 .inp-select {
-
+	font-size: 1.6em;
+	min-width: 8em;
 }
 
 .result {
@@ -266,15 +268,18 @@ h3 {
 
 .section-right 
 input[type=text] {
+	font-size: 1.6em;
 	height: 2em;
 	margin-bottom: .5em;
 	padding-left: .5em; 
 	width: 85%;
 }
+
 .section-right 
 input[name=bn] {
-	width: 60%;
+	width: 50%;
 }
+
 .section-right 
 select[name=language] {
 	height: 2em;
@@ -288,13 +293,24 @@ input[type=text]:focus {
 
 .section-right 
 textarea {
+	font-size: 1.6em;
 	height: 5em;
 	max-width: 85%;
 	margin-bottom: 0.5em;
+	padding-left: .5em; 
+	padding-top: .5em;
 	width: 85%;
 }
 .section-right 
 textarea:focus {
 	background-color: rgb(238, 241, 243);
 }
+
+.section-right 
+input[type=radio] {
+	font-size: 1.6em;
+	margin-bottom: 1em;
+}
+
+
 

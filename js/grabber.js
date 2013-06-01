@@ -1,15 +1,10 @@
-
 // grabber.js
-
-
-
-
 
 (function(window) {
 	// templates
 	var templ_cleanedText   = Handlebars.compile( $("#cleaned-text-template").html() ),
-		templ_features 		= Handlebars.compile( $("#pa-order-template").html() ),
-		templ_techData 		= Handlebars.compile( $("#techData-template").html() );
+		templ_features 				= Handlebars.compile( $("#pa-order-template").html() ),
+		templ_techData 				= Handlebars.compile( $("#techData-template").html() );
 	
 	// helper-extract text
 	function grabText(txt) {
