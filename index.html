@@ -7,21 +7,22 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <titlePA text | Templater></title>
+  <title>PA text | Templater></title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/text-grabber.css">
-  <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+  <!-- // Modernizr no currently needed -->
+  <!--<script src="js/vendor/modernizr-2.6.2.min.js"></script>-->
 </head>
 <body>
 <!--Templates Start--> 
   <script id="cleaned-text-template" type="text/x-handlebars-template">
     <div class='s-cleaned-text-templ bc-grey-lighter box-shadow'>
-	  <h3 class='templ-head bc-green'>Cleaned text<\/h3>
-	  <textarea class="templ-inp-content-cleaned bc-grey-lighter js-inp-cleaned-text" disabled>{{result}}<\/textarea>
+	  <h3 class='templ-head bc-green'>Cleaned text</h3>
+	  <textarea class="templ-inp-content-cleaned bc-grey-lighter js-inp-cleaned-text" disabled >{{result}}</textarea>
     </div>	
   </script> 
   <script id="pa-order-template" type="text/x-handlebars-template">
@@ -40,10 +41,10 @@
     <button name="save" class="js-button-save inp-button" id="">Save project</button>
   </header>
   <section class="section-left width-50per s-float-left s-marg-r-3per">
+    
     <div class="bc-grey-lighter box-shadow">
       <h3 class="bc-orange">Enter source text</h3>
       <textarea name="paText" id="paText" class="inp-form-pa_text js-paText"></textarea>
-      <textarea></textarea>
     </div>
     
     <div id="result" class="result js-result"></div>
