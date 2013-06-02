@@ -73,25 +73,21 @@
       <h2>Hinweis:</h2>
       <p>{{remarks}}</p>
     </div>
-    <textarea class="templ-inp-content-cleaned bc-grey-lighter js-inp-cleaned-text" disabled>{{result}}</textarea>
-    </div>
+  
   </section>
   <section class="section-right s-width-50per s-float-left">
     <label class="label" for="select-saved-items">Choose saved item:&nbsp;&nbsp;</label>
     <select name="select-saved-items" class="js-select-saved-items inp-select" id="select-saved-items">
-        <option>Saved items</option>
+      <option>Saved items</option>
     </select>
+    
     <h3>Product B/N:</h3>
-    <input type="text" name="bn" id="bn" class="js-bn" placeholder=" Enter BN">
-    </input>
-    &nbsp;
+    <input type="text" name="bn" id="bn" class="js-bn" placeholder=" Enter BN">&nbsp;
+    
     <h3>Product name:</h3>
-    <label class="label" for="lowercase_input">LCase</label>
-    &nbsp;
-    <input type="radio" name="capitalize_input" id="lowercase_input" class="js-capitalize-input" value="lowercase" checked>
-    &nbsp;&nbsp;
-    <label class="label" for="uppercase_input">UCase</label>
-    &nbsp;
+    <label class="label" for="lowercase_input">LCase</label>&nbsp;
+    <input type="radio" name="capitalize_input" id="lowercase_input" class="js-capitalize-input" value="lowercase" checked>&nbsp;&nbsp;
+    <label class="label" for="uppercase_input">UCase</label>&nbsp;
     <input type="radio" name="capitalize_input" id="uppercase_input" class="js-capitalize-input" value="uppercase">
     <input type="text" name="product_name" id="product_name" class="js-product-name" placeholder=" German product name">
     <br>
@@ -99,6 +95,7 @@
     <br>
     <input type="text" name="product_name" id="product_name" class="js-product-name" placeholder=" German product name">
     <br>
+    
     <h3>Features:</h3>
     <input type="text" name="feature_1" id="feature_1" class="bc-blue-h js-product-feature_1" placeholder=" Feature 1">
     <br>
@@ -109,6 +106,7 @@
     <input type="text" name="feature_4" id="feature_4" class="js-product-feature_4" placeholder=" Feature 4">
     <br>
     <input type="text" name="feature_5" id="feature_5" class="js-product-feature_5" placeholder=" Feature 5">
+    
     <h3>Packing text:</h3>
     <textarea name="packing_text" id="packing_text" class="js-packing-text" placeholder=" Packing text"></textarea>
     <h3>Feature text:</h3>
@@ -123,11 +121,13 @@
     <textarea name="delivery_custom" id="delivery_custom" class="js-delivery_custom" placeholder=" Delivery contents"></textarea>
     <br>
     <input type="text" name="delivery_manual" id="delivery_manual" class="js-delivery_manual" value="Bedienungsanleitung">
-</section>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
-<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script> 
-<script src="js/vendor/handlebars-1.0.0-rc.4.js"></script> 
-<script src="js/plugins.js"></script> 
-<script src="js/grabber.js"></script>
+  </section>
+  
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script> 
+  <script src="js/vendor/handlebars-1.0.0-rc.4.js"></script> 
+  <script src="js/plugins.js"></script> 
+  <script src="js/grabber.js"></script>
+
 </body>
 </html>
