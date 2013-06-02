@@ -52,7 +52,7 @@
 				savedItem = JSON.parse(localStorage.getItem(c));
 				options += "<option>" + savedItem.bn + "</option>"	
 			}
-			$('.js-select-saved-items').append(options);
+			$('.js-select-saved-items').html(options);
 		}
 	}
 	// run it once onload
