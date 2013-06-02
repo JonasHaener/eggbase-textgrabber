@@ -107,9 +107,35 @@ p, h1 {
 }
 
 
+
 .s-cleaned-text-templ {
-	border-bottom: 1px solid #ABABAB;		
+	border-bottom: 1px solid #ABABAB;	
 }
+
+
+
+.s-final-text-templ {
+}
+
+.s-final-text-templ > div {
+	padding-left: 1em;
+	padding-bottom: 2em;
+}
+
+.s-final-text-templ h3 {
+	font-weight: bold;
+	margin-bottom: 0;
+}
+
+.s-final-text-templ li {
+}
+
+.s-final-text-templ p {
+	line-height: 1.6em;
+}
+
+
+
 
 
 /******* Main structure *******/ 
@@ -125,23 +151,19 @@ p, h1 {
 	
 }
 
-section {
-	border: thin rgb(224, 224, 224) solid;	
-	background-color: rgb(255, 255, 255);
-	padding: 1em 1em 2em 1em;
-	margin-bottom: 3em;
-	width: 40%;
+.fixed {
+	position: fixed !important;	
 }
-
-
-
-
-
 
 
 /********* General ************/ 
 
-h3 {
+p, li, h3 {
+	font-size: 1.6em;	
+}
+
+
+h2 {
 	font-size: 1.6em;
 	background: rgb(104, 104, 104);
 	color: #FFF;
@@ -181,6 +203,9 @@ h3 {
 header {
 	font-size: 0;
 	margin-bottom: 16px;
+	position: fixed;
+	width: 100%;
+	z-index: 99;
 }
 
 
@@ -194,10 +219,23 @@ header {
 }
 
 
+/********* Working container **************/ 
+
+.working-container {
+	padding-top: 5em;
+}
 
 
 
+/********* Sections **************/ 
 
+section {
+	border: thin rgb(224, 224, 224) solid;	
+	background-color: rgb(255, 255, 255);
+	padding: 1em 1em 2em 1em;
+	margin-bottom: 3em;
+	min-width: 40%;
+}
 
 
 /********* Left section **************/ 
@@ -207,7 +245,7 @@ header {
 }
 
 .section-left 
-h3 {
+h2 {
 	background: rgb(104, 104, 104);
 	color: #FFF;
 	width: 100%;
@@ -253,10 +291,9 @@ h3 {
 
 .section-right {
 	padding-left: 3em;
-	min-width: 30%;
 }
 
-.section-right h3 {
+.section-right h2 {
 	width: 85%;
 	
 }
@@ -276,8 +313,13 @@ input[type=text] {
 }
 
 .section-right 
+input[name=designer] {
+	width: 40%;
+}
+
+.section-right 
 input[name=bn] {
-	width: 50%;
+	width: 30%;
 }
 
 .section-right 

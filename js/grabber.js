@@ -2,9 +2,13 @@
 
 (function(window) {
 	// templates
-	var templ_cleanedText   = Handlebars.compile( $("#cleaned-text-template").html() ),
+	var templ_cleanedText   		= Handlebars.compile( $("#cleaned-text-template").html() ),
 		templ_features 				= Handlebars.compile( $("#pa-order-template").html() ),
-		templ_techData 				= Handlebars.compile( $("#techData-template").html() );
+		templ_techData 				= Handlebars.compile( $("#techData-template").html() ),
+		$leftSection 				= $('.section-left'),
+	  	$rightSection 				= $('.section-right'),
+		$rightSectionInitPosLeft	= $('.section-right').offset().left;
+		$rightSectionInitPosTop		= $('.section-right').offset().top;
 	
 	// helper-extract text
 	function grabText(txt) {
@@ -88,6 +92,7 @@
 	// initiate text extraction
 	// assign results to handlebars templates
 	$('.js-button-save').on('click',function(e) {
+				
 		if ('localStorage' in window) {
 			console.log('storage available');
 			var bn = $('.js-bn').val(),
@@ -113,5 +118,30 @@
 			$('.js-paText').val( savedItemObj.txt );	
 		}
 	});
+	
+/*
+	// fix left section on scroll
+	$(window).on('scroll', function() {
+		var $leftSectionPosTop = $leftSection.offset().top,
+	    	$scrollTop = $(window).scrollTop();
+	
+	  	$('.section-right').offset({ 
+			top:  $rightSectionInitPosLeft, 
+			left: $rightSectionInitPosTop
+		});
+	  
+	  if ($scrollTop > $leftSectionPosTop - $scrollTop) {
+	    $leftSection.addClass('fixed');
+	  } else {
+		$leftSection.removeClass('fixed');
+	  }
+	
+		  console.log('$leftSectionPos top', $leftSectionPosTop);
+	console.log('$scrollTop', $scrollTop);
+	
+	});
+*/		
+	
+	
 	
 }(window));
