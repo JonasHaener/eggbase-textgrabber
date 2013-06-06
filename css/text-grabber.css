@@ -313,6 +313,17 @@ input[type=text] {
 }
 
 .section-right 
+input[type=date] {
+	font-size: 1.6em;
+	height: 2em;
+	margin-bottom: .5em;
+	padding-left: .5em; 
+	width: 40%;
+}
+
+
+
+.section-right 
 input[name=designer] {
 	width: 40%;
 }

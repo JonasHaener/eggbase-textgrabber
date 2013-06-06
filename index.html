@@ -20,19 +20,61 @@
 
 <body>
 <!--Templates Start--> 
-<script id="cleaned-text-template" type="text/x-handlebars-template">
+  
+  <script id="cleaned-text-template" type="text/x-handlebars-template">
     <div class='s-cleaned-text-templ bc-grey-lighter box-shadow'>
-	  <h2 class='templ-head bc-green'>Cleaned text</h2>
+	  <h2 class='templ-head bc-orange'>Cleaned text</h2>
 	  <textarea class="templ-inp-content-cleaned bc-grey-lighter js-inp-cleaned-text" disabled >{{result}}</textarea>
     </div>	
   </script> 
-  <script id="pa-order-template" type="text/x-handlebars-template">
-    <p class='templ-head bc-green'>Features</p>
-    <p class="templ-content">{{result}}</p>
-  </script> 
-  <script id="techData-template" type="text/x-handlebars-template">
-    <p class='templ-head bc-yellow'>Tech data</p>
-	<p class="templ-content">{{result}}</p>
+
+  <script id="final-text-template" type="text/x-handlebars-template">
+    <div class='s-final-text-templ bc-grey-lighter box-shadow'>
+        <h2 class='templ-head bc-blue'>Complete packaging text</h2>
+        <div>
+          <p>Date: {{date}}</p>
+          <p>Designer: {{designer}}</p>
+          <br>
+          <h3>B/N: {{bn}}</h3>
+          <h3>Lang: {{lang_code}}</h3>
+          <h3>Model-No.: {{model_number}}</h3>
+          <h3>Product name: {{product_name}}</h3>
+          <ul>
+            {{#if feature_1}}
+			  <li>{{feature_1}}</li>
+            {{/if}}
+			{{#if feature_2}}
+			  <li>{{feature_2}}</li>
+            {{/if}}
+			{{#if feature_3}}
+			  <li>{{feature_3}}</li>
+            {{/if}}
+		    {{#if feature_4}}
+			  <li>{{feature_4}}</li>
+            {{/if}}
+			{{#if feature_5}}
+			  <li>{{feature_5}}</li>
+			{{/if}}
+           </ul>
+           <br>
+           <p>{{packing_text}}</p>
+           <br>
+           <h3>Ausstattung:</h3>
+           <p>{{feature_text}}</p>
+           <br>
+           <h3>Technische Daten:</h3>
+           <p>{{tech_data}}</p>
+           <p>{{tech_data_dim}}</p>
+           <p>{{tech_data_weight}}</p>
+           <br>
+           <h3>Packungsinhalt:</h3>
+           <p>{{contents}}</p>
+           <p>{{contents_manual}}</p>
+           <br>
+           <h3>Hinweis:</h3>
+           <p>{{remarks}}</p>
+        </div>
+      </div>
   </script> 
 <!--Templates End-->
   <header class="bc-grey-dark">
@@ -44,107 +86,91 @@
   <div class="working-container">
     <section class="section-left width-50per s-float-left s-marg-r-3per">
       <div class="bc-grey-lighter box-shadow">
-        <h2 class="bc-orange">Enter source text</h2>
+        <h2 class="bc-green">Enter source text</h2>
         <textarea name="paText" id="paText" class="inp-form-pa_text js-paText"></textarea>
       </div>
       <div id="result" class="result js-result"></div>
+      <div class="result js-final-template"></div>
         
       <!-- Final packaging text template -->
-      <div class='s-final-text-templ bc-grey-lighter box-shadow'>
-        <h2 class='templ-head bc-blue'>Complete packaging text</h2>
-        <div>
-          <p>{{date}}</p>
-          <p>{{designer}}</p>
-          <br>
-          <h3>{{bn}}</h3>
-          <h3>{{language_code}}</h3>
-          <h3>{{model_number}}</h3>
-          <br>
-          <h3>{{product_name}}</h3>
-          <ul>
-            <li>{{feature_1}}</li>
-            <li>{{feature_2}}</li>
-            <li>{{feature_3}}</li>
-            <li>{{feature_4}}</li>
-            <li>{{feature_5}}</li>
-           </ul>
-           <br>
-           <p>{{feature_text}}</p>
-           <br>
-           <h3>Ausstattung:</h3>
-           <p>{{equipment}}</p>
-           <br>
-           <h3>Technische Daten:</h3>
-           <p>{{technical_data_custom}}</p>
-           <p>{{technical_data_dimensions}}</p>
-           <p>{{technical_data_weight}}</p>
-           <br>
-           <h3>Packungsinhalt:</h3>
-           <p>{{contents_custom}}</p>
-           <p>{{contents_manual}}</p>
-           <br>
-           <h3>Hinweis:</h3>
-           <p>{{remarks}}</p>
-        </div>
-      </div>
+     
     </section>
+    
+    
     <section class="section-right s-width-50per s-float-left ">
       <label class="label" for="select-saved-items">Choose saved item:&nbsp;&nbsp;</label>
       <select name="select-saved-items" class="js-select-saved-items inp-select" id="select-saved-items">
         <option>Saved items</option>
       </select>
+      
+      
       <h2>Desiger / Product B/N:</h2>
-      <input type="text" name="designer" id="designer" class="designer" list="dtl-designers" placeholder="Enter your name">
+      <input type="text" name="designer" id="designer" class="js-inp-designer designer" list="dtl-designers" placeholder="Enter your name">
       &nbsp;
       <datalist id="dtl-designers">
         <option>Jonas Haener</option>
         <option>Kristine Veseli</option>
         <option>Holger Klare</option>
       </datalist>
-      <input type="text" name="bn" id="bn" class="js-bn" placeholder=" Enter BN">
-      &nbsp;
+      <input type="text" name="bn" id="bn" class="js-inp-bn" placeholder=" Enter BN">&nbsp;
+      <br>
+      <input type='date' name="date" id="date" class="js-inp-date">
+      
       <h2>Product name:</h2>
       <label class="label" for="lowercase_input">LCase</label>
       &nbsp;
-      <input type="radio" name="capitalize_input" id="lowercase_input" class="js-capitalize-input" value="lowercase" checked>
+      <input type="radio" name="uppercase" id="lowercase_input" class="js-radio-lowercase" value="lowercase" checked='checked'>
       &nbsp;&nbsp;
       <label class="label" for="uppercase_input">UCase</label>
       &nbsp;
-      <input type="radio" name="capitalize_input" id="uppercase_input" class="js-capitalize-input" value="uppercase">
-      <input type="text" name="product_name" id="product_name" class="js-product-name" placeholder=" German product name">
+      
+      <input type="radio" name="uppercase" id="uppercase_input" class="js-radio-uppercase" value="uppercase">
+      
+      <input type="text" name="product_name" id="product_name" class="js-inp-prodName" placeholder=" German product name">
       <br>
-      <input type="text" name="model_number" id="model_number" class="js-model_number" placeholder=" Model number">
+      <input type="text" name="model_number" id="model_number" class="js-inp-modelNum" placeholder=" Model number">
       <br>
-      <input type="text" name="product_name" id="product_name" class="js-product-name" placeholder=" German product name">
-      <br>
+   
+      
       <h2>Features:</h2>
-      <input type="text" name="feature_1" id="feature_1" class="bc-blue-h js-product-feature_1" placeholder=" Feature 1">
+      <input type="text" name="feature_1" id="feature_1" class="bc-blue-h js-inp-feature-1" placeholder=" Feature 1">
       <br>
-      <input type="text" name="feature_2" id="feature_2" class="js-product-feature_2" placeholder=" Feature 2">
+      <input type="text" name="feature_2" id="feature_2" class=" js-inp-feature-2" placeholder=" Feature 2">
       <br>
-      <input type="text" name="feature_3" id="feature_3" class="js-product-feature_3" placeholder=" Feature 3">
+      <input type="text" name="feature_3" id="feature_3" class=" js-inp-feature-3" placeholder=" Feature 3">
       <br>
-      <input type="text" name="feature_4" id="feature_4" class="js-product-feature_4" placeholder=" Feature 4">
+      <input type="text" name="feature_4" id="feature_4" class=" js-inp-feature-4" placeholder=" Feature 4">
       <br>
-      <input type="text" name="feature_5" id="feature_5" class="js-product-feature_5" placeholder=" Feature 5">
+      <input type="text" name="feature_5" id="feature_5" class=" js-inp-feature-5" placeholder=" Feature 5">
+     
+     
       <h2>Packing text:</h2>
-      <textarea name="packing_text" id="packing_text" class="js-packing-text" placeholder=" Packing text"></textarea>
+      <textarea name="packing_text" id="packing_text" class="js-inp-packingText" placeholder=" Packing text"></textarea>
+     
+     
       <h2>Feature text:</h2>
-      <textarea name="feature_text" id="feature_text" class="js-feature-text" placeholder=" Feature text"></textarea>
+      <textarea name="feature_text" id="feature_text" class="js-inp-featureText" placeholder=" Feature text"></textarea>
+     
+     
       <h2>Technical data:</h2>
-      <textarea name="techdata_custom" id="techdata_custom" class="js-techdata_custom" placeholder=" Technical data"></textarea>
+      <textarea name="tech_data" id="techdata_custom" class="js-inp-techData" placeholder=" Technical data"></textarea>
       <br>
-      <input type="text" name="techdata_dimensions" id="techdata_dimensions" class="js-techdata-dimensions" placeholder="Dimensions" data-prefix='Abmessungen (B x H x T):'>
+      <input type="text" name="tech_data_dim" id="techdata_dimensions" class="js-inp-techData-dimen" placeholder="Dimensions" data-prefix='Abmessungen (B x H x T):'>
       <br>
-      <input type="text" name="techdata_weight" id="techdata_weight" class="js-techdata_weight" placeholder="Weight" data-prefix='Gewicht:'>
+      <input type="text" name="tech_data_weight" id="techdata_weight" class="js-inp-techData-weigth" placeholder="Weight" data-prefix='Gewicht:'>
+     
+     
       <h2>Delivery contents:</h2>
-      <textarea name="delivery_custom" id="delivery_custom" class="js-delivery_custom" placeholder=" Delivery contents"></textarea>
+      <textarea name="contents" id="delivery_custom" class="js-inp-contents" placeholder=" Delivery contents"></textarea>
       <br>
-      <input type="text" name="delivery_manual" id="delivery_manual" class="js-delivery_manual" value="Bedienungsanleitung">
+      <input type="text" name="contents_manual" id="delivery_manual" class="js-inp-contents-im" value="Bedienungsanleitung">
+      
+      <h2>Remarks:</h2>
+      <textarea name="remarks" id="remarks" class="js-inp-remarks" placeholder="Enter your remarks"></textarea>
     </section>
   </div>
   
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
+<!--  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
   <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script> 
   <script src="js/vendor/handlebars-1.0.0-rc.4.js"></script> 
   <script src="js/plugins.js"></script> 
