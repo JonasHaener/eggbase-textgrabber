@@ -10,17 +10,74 @@
       $leftSection             = $('.section-left'),
       $rightSection            = $('.section-right'),
       $rightSectionInitPosLeft = $('.section-right').offset().left,
-      $rightSectionInitPosTop  = $('.section-right').offset().top;
+      $rightSectionInitPosTop  = $('.section-right').offset().top,
+	  $mainContainer           = $('.js-main-container');
 
-
-
-//--------Notifications-----------//	
-
-  function notify() {
 	  
-	  
+//--------Notifications custom event-----------//	
+
+  function handleUnsavedData (event, status) {
+	  switch(status) {
+          case 'saved':
+		      $('.js-button-save').eq(0).removeClass('js-unsaved');
+			  break;
+	      case 'unsaved':
+		      $('.js-button-save').eq(0).addClass('js-unsaved');
+			  break;
+	  }
   }
+	
+  function addCustomTriggerEvent( o ) {
+	  if (typeof o !== 'object') { throw new Error("textgrabber says: Object expected") }
+      // assign custom events to eventReceiver ('body')
+      $('body').bind(o.custEvent, o.handler);
+	  // loop over tags and assign custom trigger event
+	  o.eles.forEach(function(item, index, array) { 
+		   $mainContainer.on(o.onEvent, item, function() {
+		       $(this).trigger(o.custEvent, [o.status]);
+		 });
+      });
+  }
+  
+  // Form input elements 
+  // Textarea
+  addCustomTriggerEvent( 
+	    { eles       : ['input[type=text]', 'textarea'], 
+		  onEvent    : 'focus', 
+		  custEvent  : 'unsaved', 
+		  status     : 'unsaved',
+		  handler    : handleUnsavedData
+		});
+		
+  // Radio input elements 
+  // 
+  addCustomTriggerEvent( 
+	    { eles       : ['input[type=radio]'], 
+		  onEvent    : 'click', 
+		  custEvent  : 'unsaved', 
+		  status     : 'unsaved',
+		  handler    : handleUnsavedData
+		});
+		
+  // Date input elements 
+  // 
+  addCustomTriggerEvent( 
+	    { eles       : ['input[type=date]'], 
+		  onEvent    : 'focus', 
+		  custEvent  : 'unsaved', 
+		  status     : 'unsaved',
+		  handler    : handleUnsavedData
+		});				
 
+  // Save button 
+  // 
+  addCustomTriggerEvent( 
+	    { eles       : ['.js-button-save'], 
+		  onEvent    : 'click', 
+		  custEvent  : 'saved', 
+		  status     : 'saved',
+		  handler    : handleUnsavedData
+		});				
 
 
 

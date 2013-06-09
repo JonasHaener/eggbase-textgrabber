@@ -120,6 +120,7 @@ p, h1 {
 .s-final-text-templ > div {
 	padding-left: 1em;
 	padding-bottom: 2em;
+	padding-right: 1em;
 }
 
 .s-final-text-templ h3 {
@@ -165,36 +166,63 @@ p, li, h3 {
 
 h2 {
 	font-size: 1.6em;
-	background: rgb(104, 104, 104);
+	background-color: rgb(104, 104, 104);
 	color: #FFF;
 	box-shadow: #BCBCBC 1px 1px 1px;
 	padding: 0.5em 0.7em;
 }
 .inp-button {
+	font-size: 16px;
 	background-color: #4F4F4F;
 	border: none;
-	border-right: solid #7C7C7C thin;
+	border-right: solid #7C7C7C 1px;
 	color: rgb(179, 179, 179);
-	font-size: 16px;
-	min-width: 10em;
-	padding: .5em;
-	margin: 0;
+	height: 2em;
+	width: 3.5em;
 }
 .inp-button:first-of-type {
 	border-left: solid #7C7C7C thin;
 }
 
-.inp-button:hover {
+.inp-button:not(.inp-button-toaster):hover {
 	background-color: rgb(125, 209, 46);
 	color: #E4E4E4;
-
 }
+
+.inp-button-backgr {
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: 35%;	
+}
+
+.inp-button-toaster {
+	background-image: url(../img/structure_images/toaster.png);
+	cursor: default;
+}
+
+.inp-button-clean {
+    background-image: url(../img/structure_images/clean.png);
+}
+
+.inp-button-write {
+	 background-image: url(../img/structure_images/write.png);	
+}
+
+.inp-button-save {
+	 background-image: url(../img/structure_images/save.png);		
+}
+
+/*unsaved work*/
+.inp-button-save.js-unsaved {
+	 background-color: rgb(240, 169, 42);
+	 transition: ease-in;
+	 transition-property: background-color;
+	 transition-duration: 600ms;
+}
+
 .label {
 	font-size: 1.6em;
 }
-
-
-
 
 
 
@@ -206,16 +234,6 @@ header {
 	position: fixed;
 	width: 100%;
 	z-index: 99;
-}
-
-
-.headline {
-	color: rgb(179, 179, 179);
-	display: inline-block;
-	font-size: 16px;
-	font-weight: normal;
-	text-indent: 1em;
-	margin-right: 3em;
 }
 
 
@@ -234,7 +252,7 @@ section {
 	background-color: rgb(255, 255, 255);
 	padding: 1em 1em 2em 1em;
 	margin-bottom: 3em;
-	min-width: 40%;
+	width: 40%;
 }
 
 
@@ -256,7 +274,6 @@ h2 {
 	box-shadow: none;
 	background-color: #F6F6F6;
 	border: 0;
-	
 	font-size: 1.6em;
 	max-width: 100%;
 	min-height: 10em;
@@ -270,8 +287,6 @@ h2 {
 .inp-form-pa_text:focus {
 	height: 20em;
 }
-
-
 
 
 .inp-select {
