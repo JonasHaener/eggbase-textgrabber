@@ -133,6 +133,7 @@
   function saveItem() {
 	  console.log('saveItem() works');
        if ('localStorage' in window) {
+		  // collect form input 
           var coll = getFormDetails(true);
 		  if (coll.bn !== "") {
               window
@@ -223,7 +224,7 @@
   });
   
 
-//--------Initial Runs-----------//
+//--------Retrieved item-----------//
 
   $('.js-select-saved-items').on('change',function(e) {
       // retrieve selected items in option select
