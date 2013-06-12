@@ -4,16 +4,14 @@
 (function(window) {
 
 // =============================================================================
-//   Templates and left and right section details
+//   Contants
 // =============================================================================
 	
   var TEMPL_CLEAN_TEXT         = Handlebars.compile( $("#cleaned-text-template").html() ),
       TEMPL_FINAL_TEMPLATE     = Handlebars.compile( $("#final-text-template").html() ),
-      $leftSection             = $('.section-left'),
-      $rightSection            = $('.section-right'),
-      $rightSectionInitPosLeft = $('.section-right').offset().left,
-      $rightSectionInitPosTop  = $('.section-right').offset().top,
-	  $mainContainer           = $('.js-main-container');
+	  NO_LOCAL_STORAGE_MESSAGE = 'Sorry your browser cannot save items',
+	  NO_BN_ENTERED_MESSAGE    = 'Please enter a BN',
+	  $MAIN_CONTAINER          = $('.js-main-container');
 
 
 // =============================================================================
@@ -37,7 +35,7 @@
       $('body').bind(o.custEvent, o.handler);
 	  // loop over tags and assign custom trigger event
 	  o.eles.forEach(function(item, index, array) { 
-		   $mainContainer.on(o.onEvent, item, function() {
+		   $MAIN_CONTAINER.on(o.onEvent, item, function() {
 		       $(this).trigger(o.custEvent, [o.status]);
 		 });
       });
@@ -138,13 +136,15 @@
 			
       function collect( item, index, array ) {
           var c, 
-		      collect = document.getElementsByTagName(item);
+		      collect = document.getElementsByTagName(item),
+			  eleItem = null;
           for (c = 0; c < collect.length; c += 1) {
+			  eleItem = collect[c];
               // assign name
-              if (collect[c].type === 'radio') {
-                  collection[ collect[c].name ] = collect[c].checked;
+              if (eleItem.type === 'radio') {
+                  collection[ eleItem.name ] = eleItem.checked;
 		      } else {
-                  collection[ collect[c].name ] = collect[c].value;
+                  collection[ eleItem.name ] = eleItem.value;
 		      }		  	
 		  }
           // mem clean up
@@ -220,11 +220,11 @@
 			   .localStorage
                .setItem(coll.bn, JSON.stringify(coll));
 		  } else {
-              alert('Please enter a BN');
+              alert(NO_BN_ENTERED_MESSAGE);
 			  return;	
 		  }
 	  } else {
-          alert('Sorry your browser cannot save items');	
+          alert(NO_LOCAL_STORAGE_MESSAGE);	
       }
   }
   
