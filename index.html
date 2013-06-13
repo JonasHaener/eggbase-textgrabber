@@ -24,7 +24,7 @@
   <script id="cleaned-text-template" type="text/x-handlebars-template">
     <div class='s-cleaned-text-templ bc-grey-lighter box-shadow'>
 	  <h2 class='templ-head bc-orange'>Cleaned text</h2>
-	  <textarea class="templ-inp-content-cleaned bc-grey-lighter js-inp-cleaned-text" disabled >{{result}}</textarea>
+	  <textarea class="templ-inp-content-cleaned bc-grey-lighter js-inp-cleaned-text" disabled >{{cleanedTxt}}</textarea>
     </div>	
   </script> 
 
@@ -89,12 +89,13 @@
     <button name="button-grabText" class="js-button-grabText inp-button inp-button-backgr inp-button-clean" id="" title="clean text"></button>
     <button name="write-template" class="js-button-write-template inp-button inp-button-backgr inp-button-write" id="" title="write template"></button>
     <button name="save" class="js-button-save inp-button inp-button-backgr inp-button-save" id="" title="save input"></button>
+    <button name="delete" class="js-button-delete-bn inp-button inp-button-backgr inp-button-delete-bn" id="" title="delete BN"></button>
   </header>
   <div class="working-container">
     <section class="section-left width-50per s-float-left s-marg-r-3per">
       <div class="bc-grey-lighter box-shadow">
         <h2 class="bc-green">Enter source text</h2>
-        <textarea name="paText" id="paText" class="inp-form-pa_text js-paText"></textarea>
+        <textarea name="paText" id="paText" class="inp-form-pa_text js-paText">"<header>"Technische Daten    :   Hubschieber, Ausstattung: Hebelkollapser</header><br><footer>Hello Man</footer>"</textarea>
       </div>
       <div id="result" class="result js-result"></div>
       <div class="result js-final-template"></div>
@@ -191,7 +192,7 @@
   <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script> 
   <script src="js/vendor/handlebars-1.0.0-rc.4.js"></script> 
   <script src="js/plugins.js"></script> 
-  <script src="js/EGG_stringManipulator.js"></script> 
+  <script src="js/EGG_stringManipulator.1.0.js"></script> 
   <script src="js/grabber.js"></script>
 </div> 
 </body>

@@ -212,6 +212,10 @@ h2 {
 	 background-image: url(../img/structure_images/save.png);		
 }
 
+.inp-button-delete-bn {
+	 background-image: url(../img/structure_images/delete.png);		
+}
+
 /*unsaved work*/
 .inp-button-save.js-unsaved {
 	 background-color: rgb(240, 169, 42);
@@ -219,6 +223,11 @@ h2 {
 	 transition-property: background-color;
 	 transition-duration: 600ms;
 }
+
+.inp-button.inp-button-delete-bn:hover {
+     background-color: red;	
+}
+
 
 .label {
 	font-size: 1.6em;

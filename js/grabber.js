@@ -1,6 +1,12 @@
 // grabberjs
 "use strict";
 
+var arr = [ ['name', 0], ['name', 1 ] ];
+var c = 0;
+var name = "My name is " + arr[c][1];
+console.log(name);
+
+
 (function(window) {
 
 // =============================================================================
@@ -92,33 +98,35 @@
 // =============================================================================
 
   function grabText(txt) {
+	  console.log('start');
       // if input is not string return false 
       if (typeof txt !== "string") { return false; }
       // holds text results
-      var resObj = {},
-      // trim text input
-      text = txt.trim(),
-      // GREPs
-      //grep_header 	= /[^(<.>)$](\w*\d*)[^<\/.>)$]/ig,
-      grep_header 	= /([\w\s?]*)(?=(<\/header))/ig,
-      grep_features = /([\w\s?]*)(?=(<\/features))/ig,
-      grep_techData = /([\w\s?]*)(?=(<\/techdata))/ig, // (^|\s)Blah(\s|$)		
-      // extractor function
-      extract = function(grep, txt) {
-          var resArr = [];
-          if (grep.test(txt) === true) {
-              resArr = txt.match(grep);					
-          } else {
-	          resArr[0] = "Error: Check text settings/missing tags";
-          }
-          return resArr.join(" ");
-      };
-      // return extracted results		
-      return {
-          header    :   extract (grep_header, text),
-          techData  :   extract (grep_techData, text),
-          features  :   extract (grep_features, text)
-      }
+      var text = txt.trim(),
+      // Regular expressions
+      grep_cleanTags 	= /"*<\/?\w*>"*/ig,
+	  grep_features    = /(Ausstattung|Technische Daten)(\s*(:)\s*)*/ig,
+      grep_techData     = /([\w\s?]*)(?=(<\/techdata))/ig, // (^|\s)Blah(\s|$),
+	  
+      // extractor iterator function
+      extract = function(txt, grep, c) {
+			if (grep.length === c) {
+			    return txt;	
+			}
+		    txt = txt.replace(grep[c][0], grep[c][1]);
+            return extract(txt, grep, c+=1);
+      },
+      // arrange regular expressions in an array
+	  // [0] = regular expression, [1] = replacement character
+	  // to pass to iterator extractor function
+	  grep_arr    = [];
+	  grep_arr[0] = [ grep_cleanTags, "" ];
+	  grep_arr[1] = [ grep_features, "\n$1$3 " ];
+	  grep_arr[2] = [ grep_techData, "" ];
+	  
+	  // return extracted results
+	  return extract(text, grep_arr, 0);
+  
   }
   
  
@@ -259,16 +267,13 @@
  
 //--------Get text and load cleaned text into result-----------//	
   $('.js-button-grabText').on('click',function(e) {
-		var a, 
-		    resArr = [],
-            // extract text, results object returned
-		    resObj = grabText( $('.js-paText').val() );
+		var a,
+		    // extract text, results object returned
+		    resStr = grabText( $('.js-paText').val() );
 		    // extractor function returns null if value is not string
-		if (resObj.constructor === Object) {
-		    // assign results to templates and push into results array	
-		    resArr.push(TEMPL_CLEAN_TEXT( {result:resObj.header} ));
+		if (typeof resStr === 'string') {
 		    // join templates array and append to results tag
-		    $(".js-result").html( resArr.join("") );
+		    $(".js-result").html(TEMPL_CLEAN_TEXT({ cleanedTxt:resStr }));
 		}
 		// prevent form submission
 		e.preventDefault();
@@ -325,7 +330,7 @@
   // write in first selected BN on load
   writeFormDetails ($('.js-select-saved-items').val());
   // clear all input data field
-  $('input, select, textarea').val("");
+  //$('input, select, textarea').val("");
 	
 	
 }(window));
