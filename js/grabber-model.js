@@ -10,7 +10,7 @@ EGG_TGrab.model = (function() {
    ============================================================================= */
 
   //var $MAIN_CONTAINER = $('.js-main-container');
-    var LOCAL_STORAGE = ("localStorage" in window) ? window.localStorage : false;
+  var LOCAL_STORAGE = ("localStorage" in window) ? window.localStorage : false;
 	
 /* =============================================================================
      Input validation
