@@ -20,7 +20,7 @@ EGG_TGrab.view = (function() {
    ============================================================================= */
   
   /* report unsaved data to user */
-  function reportUnsavedData (event, status) {
+  function notifyUnsavedData(customEvent, status) {
 	  switch(status) {
           case 'saved':
 		      $('.js-button-save').eq(0).removeClass('js-unsaved');
@@ -29,6 +29,20 @@ EGG_TGrab.view = (function() {
 		      $('.js-button-save').eq(0).addClass('js-unsaved');
 			  break;
 	  }
+  }
+  
+    /* report process completed */
+  function notifyProcessCompl() {
+	  var ele = $('.js-button-process-complete').eq(0);
+      ele
+	      .removeClass('js-process-idle')
+		  .addClass('js-process-complete');
+	  setTimeout(function() {
+		  ele
+		      .removeClass('js-process-complete')
+			  .addClass('js-process-idle');
+	  }, 1500);
+	  
   }
   
   /* alert messages to user */
@@ -84,7 +98,8 @@ EGG_TGrab.view = (function() {
   return {
 	  init:function() {
 		  return {
-		      reportUnsavedData      : reportUnsavedData, //function (event, status)
+		      notifyUnsavedData      : notifyUnsavedData, //function (event, status)
+			  notifyProcessCompl     : notifyProcessCompl,
 			  writeFormDetails       : writeFormDetails, //function (bn)
 			  alertUser              : alertUser,  //function (string)
 			  writeFinalTemplate     : writeFinalTemplate, //function (object)

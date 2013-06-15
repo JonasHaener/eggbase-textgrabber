@@ -9,34 +9,80 @@ EGG_TGrab.controller = (function() {
      Constants
    ============================================================================= */
 
-  var MESSAGE_NoStorage  = 'Sorry your browser cannot save items',
-	  MESSAGE_NoBn       = 'Please enter a BN',
-	  $MAIN_CONTAINER    = $('.js-main-container'),
-	  MODEL = EGG_TGrab.model.init(),
-	  VIEW = EGG_TGrab.view.init();
+  var MESSAGE_NoStorage      = 'Sorry mate, your browser cannot save!',
+	  MESSAGE_NoBn           = 'Sorry mate, BN missing!',
+	  MESSAGE_NotNumericBn   = 'Sorry mate, enter numeric BN!',
+	  MESSAGE_DesignerMissing= 'Sorry mate, enter yourself!',
+	  MESSAGE_CannotDelete   = 'Sorry, cannot delete, try again!',
+	  
+	  $MAIN_CONTAINER        = $('.js-main-container'),
+	  $SELECT_ITEM_SELECTOR  = $('.js-select-saved-items'),
+	  
+	  MODEL                  = EGG_TGrab.model.init(),
+	  VIEW                   = EGG_TGrab.view.init();
+
+/* =============================================================================
+     Input validation
+   ============================================================================= */
+   function validateInput() {
+	   var bool = true,
+	       bn_input = document.querySelector('.js-inp-bn').value,
+		   designer = document.querySelector('.js-inp-designer').value,
+		   message = "";
+	   
+	   if (designer === "") {
+		   message += "@ " + MESSAGE_DesignerMissing + "\n";
+		   bool = false;
+       }
+	   if (bn_input === "") {
+		   message += "@ " + MESSAGE_NoBn + "\n";
+		   bool = false;
+	   }
+       if (bn_input !== "" && isNaN(bn_input)) {
+		  message += "@ " + MESSAGE_NotNumericBn + "\n"
+		  bool = false;
+	   }
+	   if (bool === false) {
+		   // send message to view for user display
+	       VIEW.alertUser(message);
+	   }
+	   return bool;
+   }
+
+
+
+
+
 
 /* =============================================================================
      Notifications - Custom Events
    ============================================================================= */
   
   //report unsaved data  
-  function handleUnsavedData (event, status) {
-	  VIEW.reportUnsavedData(event, status);
+  function notifyUnsavedData(customEvent, status) {
+	  VIEW.notifyUnsavedData(customEvent, status);
   }
+  
+  //report completed process
+  //$MAIN_CONTAINER.bind('process-complete', notifyProcessCompl);
+  
 
   // assigns custom trigger events	
   function addCustomTriggerEvent( o ) {
+	  var container = $MAIN_CONTAINER;
 	  if (typeof o !== 'object') { 
 	      throw new Error("textgrabber says: Object expected");
 	  }
       // assign custom events to eventReceiver ('body')
-      $('body').bind(o.custEvent, o.handler);
+      container.bind(o.custEvent, o.handler);
 	  // loop over tags and assign custom trigger event
 	  o.eles.forEach(function(item, index, array) { 
-		   $MAIN_CONTAINER.on(o.onEvent, item, function() {
+		   container.on(o.onEvent, item, function() {
 		       $(this).trigger(o.custEvent, [o.status]);
 		 });
       });
+	  
+	  container = null;
   }
   // Form input elements 
   // Textarea
@@ -45,7 +91,7 @@ EGG_TGrab.controller = (function() {
 		  onEvent    : 'focus', 
 		  custEvent  : 'unsaved', 
 		  status     : 'unsaved',
-		  handler    : handleUnsavedData
+		  handler    : notifyUnsavedData
 		});
 		
   // Radio input elements 
@@ -54,7 +100,7 @@ EGG_TGrab.controller = (function() {
 		  onEvent    : 'click', 
 		  custEvent  : 'unsaved', 
 		  status     : 'unsaved',
-		  handler    : handleUnsavedData
+		  handler    : notifyUnsavedData
 		});
 		
   // Date input elements 
@@ -63,7 +109,7 @@ EGG_TGrab.controller = (function() {
 		  onEvent    : 'focus', 
 		  custEvent  : 'unsaved', 
 		  status     : 'unsaved',
-		  handler    : handleUnsavedData
+		  handler    : notifyUnsavedData
 		});				
 
   // Save button 
@@ -72,7 +118,7 @@ EGG_TGrab.controller = (function() {
 		  onEvent    : 'click', 
 		  custEvent  : 'saved', 
 		  status     : 'saved',
-		  handler    : handleUnsavedData
+		  handler    : notifyUnsavedData
 		});				
 
   // Brand selector
@@ -81,8 +127,9 @@ EGG_TGrab.controller = (function() {
 		  onEvent    : 'change', 
 		  custEvent  : 'unsaved', 
 		  status     : 'unsaved',
-		  handler    : handleUnsavedData
+		  handler    : notifyUnsavedData
 		});		
+
 
 /* =============================================================================
      Events
@@ -118,28 +165,41 @@ EGG_TGrab.controller = (function() {
   $('.js-button-save').on('click',function(e) {
       // grab value currently in BN form field
 	  // because Local Storage sorts alphabetically
-	  var initVal = $('.js-inp-bn').val(),
-	      saved = MODEL.saveInput();
-	  // "saved" is custom message
-	  switch (saved) {
-		case "saved":
-		    break;
-		case "bn_missing":
-		   VIEW.alertUser(MESSAGE_NoBn); 
-		   break;
-		case "no_storage":
-		   VIEW.alertUser(MESSAGE_NoStorage);    
+	  var initVal = $('.js-inp-bn').val();
+	  if (validateInput() === true) {
+		  // model will verify saving status
+	      var status = MODEL.saveInput();
+	      switch (status) {
+		    case "no_storage":
+	          VIEW.alertUser(MESSAGE_NoStorage);
+		      break;
+		    case "saved":
+		      VIEW.notifyProcessCompl();
+		      VIEW.displaySavedItems( MODEL.getSavedItems() );
+		      $SELECT_ITEM_SELECTOR.val(initVal);
+		    break; 
+          }  
 	  }
-	  // refresh saved items
-	  VIEW.displaySavedItems( MODEL.getSavedItems() );
-      // assign initial to saved items value after reloading items
-      $('.js-select-saved-items').val(initVal);
+  });
+  
+  /* Save form input */
+  $('.js-button-delete-bn').on('click',function(e) {
+      var status = MODEL.deleteItem( $SELECT_ITEM_SELECTOR.val() );
+	  switch (status) {
+		    case "not_deleted":
+	          VIEW.alertUser(MESSAGE_CannotDelete);
+		      break;
+		    case "deleted":
+		      VIEW.notifyProcessCompl();
+		      VIEW.displaySavedItems( MODEL.getSavedItems() );
+		    break; 
+          }  
   });
   
   /* Display saved items BNs */
-  $('.js-select-saved-items').on('change',function(e) {
+  $SELECT_ITEM_SELECTOR.on('change',function(e) {
       // retrieve selected items in option select
-	  var savedItem = MODEL.getSavedItem( $('.js-select-saved-items').val() );
+	  var savedItem = MODEL.getSavedItem( $SELECT_ITEM_SELECTOR.val() );
       VIEW.writeFormDetails(savedItem);
   });
   

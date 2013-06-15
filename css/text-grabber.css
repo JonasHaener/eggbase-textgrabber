@@ -184,7 +184,7 @@ h2 {
 	border-left: solid #7C7C7C thin;
 }
 
-.inp-button:not(.inp-button-toaster):hover {
+.inp-button:not(.inp-button-toaster):not(.inp-button-process-complete):hover {
 	background-color: rgb(125, 209, 46);
 	color: #E4E4E4;
 }
@@ -216,6 +216,11 @@ h2 {
 	 background-image: url(../img/structure_images/delete.png);		
 }
 
+.inp-button-process-complete {
+	 background-image: url(../img/structure_images/process_complete.png);			
+}
+
+
 /*unsaved work*/
 .inp-button-save.js-unsaved {
 	 background-color: rgb(240, 169, 42);
@@ -224,8 +229,23 @@ h2 {
 	 transition-duration: 600ms;
 }
 
+.inp-button-process-complete.js-process-complete {
+	background-color: #09F;
+	transition: ease-in;
+	transition-property: background-color;
+	transition-duration: 600ms;
+}
+
+.inp-button-process-complete.js-process-idle {
+	background-color: inherit;
+	transition: ease-in;
+	transition-property: background-color;
+	transition-duration: 600ms;
+}
+
+
 .inp-button.inp-button-delete-bn:hover {
-     background-color: red;	
+    background-color: red !important;	
 }
 
 

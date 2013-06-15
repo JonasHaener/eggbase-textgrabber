@@ -6,13 +6,21 @@ window.EGG_TGrab || (window.EGG_TGrab = {});
 EGG_TGrab.model = (function() {
 
 /* =============================================================================
+     Constants
+   ============================================================================= */
+
+  //var $MAIN_CONTAINER = $('.js-main-container');
+    var LOCAL_STORAGE = ("localStorage" in window) ? window.localStorage : false;
+	   
+	
+/* =============================================================================
      Clean STIBO text
    ============================================================================= */
 
   function cleanText(txt) {
 	  console.log('start');
       // if input is not string return false 
-      if (typeof txt !== "string") { return; }
+      if (typeof txt !== "string") { return false; }
       // holds text results
       var text = txt.trim(),
       // Regular expressions
@@ -106,27 +114,30 @@ EGG_TGrab.model = (function() {
       }
    }
 
+
+
+
+
+
+
  /* =============================================================================
      Save user input
    ============================================================================= */
 	
   /* retrieve saved Items */
   function saveInput() {
-       if ('localStorage' in window) {
+	   var storage = LOCAL_STORAGE;
+       if (storage) {
 		  // collect form input 
           var coll = collectFormInput({ includeTemplate:true }),
-		      bn = coll.bn;
-		  if (bn !== "") {
-              window
-			   .localStorage
-               .setItem(bn, JSON.stringify(coll));
-			   return 'saved';
-		  } else {
-			  return 'bn_missing';	
-		  }
-	  } else {
-		  return 'no_storage';	
-      }
+		      bn = coll.bn,
+			  error_arr = [];
+		  storage.setItem(bn, JSON.stringify(coll));
+			  // send user feedback
+			  return "saved";
+	   } else {
+	     return 'no_storage';	
+       }
   }
   
  /* =============================================================================
@@ -135,27 +146,40 @@ EGG_TGrab.model = (function() {
 	
   /* get ONE saved item with BN */
   function getSavedItem (bn) {
-      return JSON.parse(window.localStorage.getItem(bn));
+      return JSON.parse(LOCAL_STORAGE.getItem(bn));
   }
   
   /* get ALL saved items */
   function getSavedItems() {
+	  var storage = LOCAL_STORAGE;
       try {
-          if ('localStorage' in window) {
+          if (storage !== false) {
               var c,
 			      savedItem = null,
-		          options = "", 
-			      storedItems = window.localStorage;
-		      for (c in storedItems) {
-                  savedItem = JSON.parse(localStorage.getItem(c));
+		          options = "";
+		      for (c in storage) {
+                  savedItem = JSON.parse(storage.getItem(c));
 			      options += "<option>" + savedItem.bn + "</option>"	
               }
-              return options;
+              return options; //string
           } else {
-			  return "";
+			  return ""; // string
 		  }
 	  } catch(err) { }
   }
+
+  /* get ONE saved item with BN */
+  function deleteItem (bn) {
+      var storage = LOCAL_STORAGE
+	  if (storage !== false) {
+		  LOCAL_STORAGE.removeItem(bn);
+	      return "deleted";
+	  } else {
+		  return "not_deleted";
+	  }
+  }
+
+  
   
  /* =============================================================================
      Return model object
@@ -168,6 +192,7 @@ EGG_TGrab.model = (function() {
 	  this.saveInput        = saveInput;
 	  this.getSavedItems    = getSavedItems;
 	  this.getSavedItem     = getSavedItem;
+	  this.deleteItem       = deleteItem;
   }
   
   /* assign init function to MODEL namespace */
