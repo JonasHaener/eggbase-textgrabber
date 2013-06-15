@@ -16,10 +16,7 @@ EGG_TGrab.view = (function(window) {
       TEMPLATE_FINAL_TEXT     = Handlebars.compile($("#final-text-template").html()),
 	  
 	  MESSAGE_NoStorage       = 'Sorry mate, your browser cannot save!',
-	  MESSAGE_Bn              = 'Sorry mate, BN missing or not numeric!',
-	  MESSAGE_DesignerMissing = 'Sorry mate, enter yourself!',
-	  MESSAGE_CannotDelete    = 'Sorry, cannot delete, try again!',
-	  MESSAGE_ProdName        = 'Sorry mate, Product name missing!';
+	  MESSAGE_CannotDelete    = 'Sorry, cannot delete, try again!';
 
 /* =============================================================================
      User notifications
@@ -95,21 +92,9 @@ EGG_TGrab.view = (function(window) {
 	  
 	  
 	  // received bn (false), designer (false)
-	  if (messType === "validator" && typeof status === 'object') {
-		  
-		  if (status.bn === false) {
-			 message += "@ " + MESSAGE_Bn + "\n"; 
-		  }
-		  
-		  if (status.designer === false) {
-			message += "@ " + MESSAGE_DesignerMissing + "\n"; 
-		  }
-		  
-		  if (status.prodName === false) {
-			message += "@ " + MESSAGE_ProdName + "\n"; 
-		  }		  
-		  
-		  alertUser(message); 
+	  if (messType === "validator" && typeof status === 'string') {
+  
+		  alertUser(status); 
       
 	  }
   }

@@ -16,46 +16,68 @@ EGG_TGrab.model = (function() {
      Input validation
    ============================================================================= */
       
-  function validateInput(fn_notify) {
+  function validateInput(fn_notify, fields) {
 	   
-	   var bool = true,
-	       bn_input = document.querySelector('.js-inp-bn').value,
-		   designer = document.querySelector('.js-inp-designer').value,
-		   prodName = document.querySelector('.js-inp-prodName').value,
-		   messObj = {};
-	   
-	   if (designer === "") {
+	   //[{ name  : "BN", check : ['numeric', 'string'], DOM   : '.js-inp-bn'}]
+       var c, 
+	       len = fields.length, 
+		   message = "", 
+		   val = "", 
+		   error = false, 
+		   status = [],
 		   
-		   messObj.designer = false;
-		   bool = false;
-       
+		   checker = function(val, criteria) {
+
+		       if (criteria === 'numeric') {
+			       // if val isNan return false
+			       return isNaN(val) || false;
+		       }
+		   
+		       if (criteria === 'string') {
+			       // if val is blank return false
+			       return val === "" || false;
+		       }
+		   }
+		   
+	   for (c = 0; c < len; c++) {
+		   
+		   // grab DOM ele
+		   val = document.querySelector(fields[c].DOM).value;
+           
+		   // loop set criterias
+		   fields[c].check.forEach(function(item,index,array) {
+		       
+			   error = checker(val, item);
+			   console.log('state is: ' + error +" : " + fields[c].name +" : " + item);
+		       status.push(error); 
+			   
+			   // if an error then assign true
+			   if (error === true) {
+		           message += "@: " + fields[c].mess + "\n";   
+			   }
+			   
+     	   });
+		   
 	   }
 	   
-       if (bn_input === "" || isNaN(bn_input)) {
-		  
-		  messObj.bn = false;
-		  bool = false;
-	   
+	   // check if errors are present (true's) and return result to controller
+	   status.forEach(function(item, index, array) {
+		   
+		   if (item === true) {
+			   error = true;
+		   }
+		   
+	   });
+
+	   if (error === true) {
+		   fn_notify({ type:'validator', value:message });  
 	   }
+	      
+	   return error;
+	    	   
+  }
 	   
-	   if (prodName === "") {
-		  
-		  messObj.prodName = false;
-		  bool = false;
-	   
-	   }
-	   
-	   
-	   if (bool === false) {
-		   // send message to view for user display
-	       fn_notify({ type:"validator", value:messObj });
-	   }
-	   
- 
-	   // return value is used for saving items
-	   return bool;
-   } 	
-	
+
 	
 /* =============================================================================
      Clean STIBO text

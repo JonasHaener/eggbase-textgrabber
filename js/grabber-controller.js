@@ -9,8 +9,29 @@ EGG_TGrab.controller = (function() {
      Constants
    ============================================================================= */
 
-  var $MAIN_CONTAINER        = $('.js-main-container'),
+  var MESSAGE_Bn              = 'Sorry mate, BN missing or not numeric!',
+	  MESSAGE_DesignerMissing = 'Sorry mate, enter yourself!',
+	  MESSAGE_ProdName        = 'Sorry mate, Product name missing!',
+	  MESSAGE_DEL_WARNING     = '@ Are you sure you want to delete this item?',
+
+      $MAIN_CONTAINER        = $('.js-main-container'),
 	  $SELECT_ITEM_SELECTOR  = $('.js-select-saved-items'),
+	  VALIDATION_FIELDS      = [{ name  : "BN",
+		                          check : ['numeric', 'string'],
+		                          DOM   : '.js-inp-bn',
+								  mess  : MESSAGE_Bn
+								},
+								{ name  : "Designer",
+		                          check : ['string'],
+		                          DOM   : '.js-inp-designer',
+								  mess  :  MESSAGE_DesignerMissing
+								},
+								{ name  : "Product name",
+		                          check : ['string'],
+		                          DOM   : '.js-inp-prodName',
+								  mess  : MESSAGE_ProdName
+								}
+							   ],
 	  
 	  MODEL                  = EGG_TGrab.model.init(),
 	  VIEW                   = EGG_TGrab.view.init();
@@ -148,9 +169,10 @@ EGG_TGrab.controller = (function() {
 	  
 	      // grab value currently in BN form field
 	      // because Local Storage sorts alphabetically
-	      initVal = $('.js-inp-bn').val();
-	
-	  if (MOD.validateInput(VIEW.notifyUser) === true) {
+	      initVal = $('.js-inp-bn').val(),
+		  error = MOD.validateInput(VIEW.notifyUser, VALIDATION_FIELDS);
+  
+	  if (error === false) {
     	  // model will verify saving status
 	      MOD.saveInput( VIEW.notifyUser );
 	      
@@ -164,7 +186,7 @@ EGG_TGrab.controller = (function() {
   /* Save form input */
   $('.js-button-delete-bn').on('click',function(e) {
 	  
-	  var bool = confirm("@ Are you sure you want to delete this item?");
+	  var bool = confirm(MESSAGE_DEL_WARNING);
 
       if (bool === true) {
 		  
@@ -185,14 +207,28 @@ EGG_TGrab.controller = (function() {
 	  VIEW.writeFormDetails(savedItem);
   });
   
-  
-  $('.js-radio-uppercase').on('change',function(e) {
+  // radio buttons
+  $('.js-radio-uppercase, .js-radio-lowercase').on('change',function(e) {
 	 
-	 var val = $('.js-inp-prodName').val();
-	 
-	 MODEL.validateInput(fn_notify, ['.js-inp-prodName'])
-	 
-	 
+	 var val = $('.js-inp-prodName').val(),
+	    
+		 error = MODEL.validateInput(VIEW.notifyUser, 
+		   [{ name:"Product name",    
+		      check:['string'],
+		      DOM:'.js-inp-prodName', 
+			  mess:MESSAGE_ProdName
+		   }]);
+		   
+        if (error === false) {
+		   
+		   if ($(this).hasClass('js-radio-uppercase')) {
+		       $('.js-inp-prodName').val(val.toUpperCase());
+		   
+		   } else if ($(this).hasClass('js-radio-lowercase')) {
+			  $('.js-inp-prodName').val(val.toLowerCase() );
+		   
+		   }
+	   }
 	 
   });
   
