@@ -11,17 +11,61 @@ EGG_TGrab.model = (function() {
 
   //var $MAIN_CONTAINER = $('.js-main-container');
     var LOCAL_STORAGE = ("localStorage" in window) ? window.localStorage : false;
+	
+/* =============================================================================
+     Input validation
+   ============================================================================= */
+      
+  function validateInput(fn_notify) {
 	   
+	   var bool = true,
+	       bn_input = document.querySelector('.js-inp-bn').value,
+		   designer = document.querySelector('.js-inp-designer').value,
+		   prodName = document.querySelector('.js-inp-prodName').value,
+		   messObj = {};
+	   
+	   if (designer === "") {
+		   
+		   messObj.designer = false;
+		   bool = false;
+       
+	   }
+	   
+       if (bn_input === "" || isNaN(bn_input)) {
+		  
+		  messObj.bn = false;
+		  bool = false;
+	   
+	   }
+	   
+	   if (prodName === "") {
+		  
+		  messObj.prodName = false;
+		  bool = false;
+	   
+	   }
+	   
+	   
+	   if (bool === false) {
+		   // send message to view for user display
+	       fn_notify({ type:"validator", value:messObj });
+	   }
+	   
+ 
+	   // return value is used for saving items
+	   return bool;
+   } 	
+	
 	
 /* =============================================================================
      Clean STIBO text
    ============================================================================= */
 
   function cleanText(txt) {
-	  console.log('start');
       // if input is not string return false 
       if (typeof txt !== "string") { return false; }
-      // holds text results
+      
+	  // holds text results
       var text = txt.trim(),
       // Regular expressions
       grep_cleanTags 	= /"*<\/?\w*>"*/ig,
@@ -30,16 +74,22 @@ EGG_TGrab.model = (function() {
 	  
       // extractor iterator function
       extract = function(txt, grep, c) {
+		
 			if (grep.length === c) {
 			    return txt;	
 			}
+		
 		    txt = txt.replace(grep[c][0], grep[c][1]);
-            return extract(txt, grep, c+=1);
+        
+		    return extract(txt, grep, c+=1);
+			
       },
-      // arrange regular expressions in an array
+      
+	  // arrange regular expressions in an array
 	  // [0] = regular expression, [1] = replacement character
 	  // to pass to iterator extractor function
 	  grep_arr    = [];
+	  
 	  grep_arr[0] = [ grep_cleanTags, "" ];
 	  grep_arr[1] = [ grep_features, "\n$1$3 " ];
 	  grep_arr[2] = [ grep_techData, "" ];
@@ -62,22 +112,30 @@ EGG_TGrab.model = (function() {
           inpElementTags = [ 'input', 'textarea', 'select' ];
 			
       function collect( item, index, array ) {
-          var c, 
+          
+		  var c, 
 		      collect = document.getElementsByTagName(item),
 			  collect_len = collect.length,
 			  eleItem = null;
-          for (c = 0; c < collect_len; c += 1) {
+          
+		  for (c = 0; c < collect_len; c += 1) {
+			  
 			  eleItem = collect[c];
-              // assign name
+              
+			  // assign name
               if (eleItem.type === 'radio') {
                   collection[ eleItem.name ] = eleItem.checked;
-		      } else {
+		      
+			  } else {
                   collection[ eleItem.name ] = eleItem.value;
-		      }		  	
+		      
+			  }
+			  		  	
 		  }
           // mem clean up
           collect = null; 	
       }
+	  
       // send to collect function to collect elements values
       inpElementTags.forEach(collect);
 
@@ -111,12 +169,9 @@ EGG_TGrab.model = (function() {
 							   
 		  contents_manual  : collection.contents_manual, 
 		  remarks          : collection.remarks
+		  
       }
    }
-
-
-
-
 
 
 
@@ -125,19 +180,26 @@ EGG_TGrab.model = (function() {
    ============================================================================= */
 	
   /* retrieve saved Items */
-  function saveInput() {
+  function saveInput(fn_notify) {
+	   
 	   var storage = LOCAL_STORAGE;
-       if (storage) {
+       
+	   if (storage) {
+
 		  // collect form input 
           var coll = collectFormInput({ includeTemplate:true }),
 		      bn = coll.bn,
 			  error_arr = [];
+		
 		  storage.setItem(bn, JSON.stringify(coll));
 			  // send user feedback
-			  return "saved";
+			  fn_notify({ type:"save", value:true });
+	   
 	   } else {
-	     return 'no_storage';	
-       }
+		   
+	     fn_notify({ type:"save", value:false });	
+       
+	   }
   }
   
  /* =============================================================================
@@ -146,36 +208,53 @@ EGG_TGrab.model = (function() {
 	
   /* get ONE saved item with BN */
   function getSavedItem (bn) {
-      return JSON.parse(LOCAL_STORAGE.getItem(bn));
+      
+	  return JSON.parse(LOCAL_STORAGE.getItem(bn));
+  
   }
   
   /* get ALL saved items */
   function getSavedItems() {
+	  
 	  var storage = LOCAL_STORAGE;
-      try {
-          if (storage !== false) {
-              var c,
+      
+	  try {
+          
+		  if (storage !== false) {
+              
+			  var c,
 			      savedItem = null,
 		          options = "";
-		      for (c in storage) {
+		      
+			  for (c in storage) {
                   savedItem = JSON.parse(storage.getItem(c));
 			      options += "<option>" + savedItem.bn + "</option>"	
               }
-              return options; //string
-          } else {
+              
+			  return options; //string
+          
+		  } else {
+			
 			  return ""; // string
 		  }
+		  
 	  } catch(err) { }
   }
 
   /* get ONE saved item with BN */
-  function deleteItem (bn) {
-      var storage = LOCAL_STORAGE
+  function deleteItem (bn, fn_notify) {
+      
+	  var storage = LOCAL_STORAGE
+	  
 	  if (storage !== false) {
+		  
 		  LOCAL_STORAGE.removeItem(bn);
-	      return "deleted";
+		  
+		  fn_notify({ type:"delete", value:true });
+	 
 	  } else {
-		  return "not_deleted";
+		  
+		  fn_notify({ type:"delete", value:false });
 	  }
   }
 
@@ -187,19 +266,25 @@ EGG_TGrab.model = (function() {
   
   /* get ALL saved items */
   function Constructor() {
+	  
+	  this.validateInput    = validateInput;
       this.cleanText        = cleanText;
 	  this.collectFormInput = collectFormInput;
 	  this.saveInput        = saveInput;
 	  this.getSavedItems    = getSavedItems;
 	  this.getSavedItem     = getSavedItem;
 	  this.deleteItem       = deleteItem;
+  
   }
+  
   
   /* assign init function to MODEL namespace */
   return { 
-      init: function() { 
+      
+	  init: function() { 
 	      return new Constructor();
 	  }
+  
   };
-		  
+    
 }());
