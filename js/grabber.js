@@ -145,8 +145,9 @@ console.log(name);
       function collect( item, index, array ) {
           var c, 
 		      collect = document.getElementsByTagName(item),
+			  collect_len = collect.length,
 			  eleItem = null;
-          for (c = 0; c < collect.length; c += 1) {
+          for (c = 0; c < collect_len; c += 1) {
 			  eleItem = collect[c];
               // assign name
               if (eleItem.type === 'radio') {
@@ -222,11 +223,12 @@ console.log(name);
   function saveItem() {
        if ('localStorage' in window) {
 		  // collect form input 
-          var coll = getFormDetails({ includeTemplate:true });
-		  if (coll.bn !== "") {
+          var coll = getFormDetails({ includeTemplate:true }),
+		      bn = coll.bn;
+		  if (bn !== "") {
               window
 			   .localStorage
-               .setItem(coll.bn, JSON.stringify(coll));
+               .setItem(bn, JSON.stringify(coll));
 		  } else {
               alert(NO_BN_ENTERED_MESSAGE);
 			  return;	
