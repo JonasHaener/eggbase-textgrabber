@@ -38,6 +38,19 @@ EGG_TGrab.view = (function(window) {
 	  
   }
 
+
+  /* report process completed */
+  function notifyProcessCompl() {
+	  
+	  var ele = $('.js-button-process-complete').eq(0);
+        
+		 ele.removeClass('js-process-idle').addClass('js-process-complete');
+	         
+		 setTimeout(function() {
+		      ele.removeClass('js-process-complete').addClass('js-process-idle');
+	      }, 1500);
+			  
+	  }
   
   function notifyUser(mess) {
 	  
@@ -52,21 +65,9 @@ EGG_TGrab.view = (function(window) {
               
 			  alert(message);  
           
-		  },
-		  
-		  /* report process completed */
-		  notifyProcessCompl = function() {
-			  
-			  var ele = $('.js-button-process-complete').eq(0);
-              
-			  ele.removeClass('js-process-idle').addClass('js-process-complete');
-	          
-			  setTimeout(function() {
-		          ele.removeClass('js-process-complete').addClass('js-process-idle');
-	          }, 1500);
-			  
 		  };
-	  
+		  
+		  
 	  if (messType === "save") {
 		  
 		  if (status === true) {

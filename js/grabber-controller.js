@@ -34,7 +34,13 @@ EGG_TGrab.controller = (function() {
 							   ],
 	  
 	  MODEL                  = EGG_TGrab.model.init(),
-	  VIEW                   = EGG_TGrab.view.init();
+	  VIEW                   = EGG_TGrab.view.init(),
+	  
+	  NOTIFY    			 = EGG_TGrab.notifications.notifyUser,
+	  NOTIFY_COMPLETE        = EGG_TGrab.notifications.notifyProcessCompl;
+	  
+	  // set notifications
+      //NOTIFY_CUSTOM          = EGG_TGrab.notifications.customSet();
 
 
 /* =============================================================================
@@ -44,7 +50,7 @@ EGG_TGrab.controller = (function() {
   //report unsaved data  
   function notifyUnsavedData(customEvent, status) {
 	 
-	  VIEW.notifyUnsavedData(customEvent, status);
+	  EGG_TGrab.notifications.notifyUnsavedData(customEvent, status);
   
   }
   
@@ -170,7 +176,7 @@ EGG_TGrab.controller = (function() {
 	      // grab value currently in BN form field
 	      // because Local Storage sorts alphabetically
 	      initVal = $('.js-inp-bn').val(),
-		  error = MOD.validateInput(VIEW.notifyUser, VALIDATION_FIELDS);
+		  error = MOD.validateInput(VALIDATION_FIELDS, [NOTIFY, ""]);
   
 	  if (error === false) {
     	  // model will verify saving status
@@ -190,7 +196,7 @@ EGG_TGrab.controller = (function() {
 
       if (bool === true) {
 		  
-	     MODEL.deleteItem( $SELECT_ITEM_SELECTOR.val(), VIEW.notifyUser );
+	     MODEL.deleteItem( $SELECT_ITEM_SELECTOR.val(), [NOTIFY_COMPLETE, ""]);
       
 	     VIEW.displaySavedItems( MODEL.getSavedItems() );
 		 
@@ -212,7 +218,7 @@ EGG_TGrab.controller = (function() {
 	 
 	 var val = $('.js-inp-prodName').val(),
 	    
-		 error = MODEL.validateInput(VIEW.notifyUser, 
+		 error = MODEL.validateInput(NOTIFY, 
 		   [{ name:"Product name",    
 		      check:['string'],
 		      DOM:'.js-inp-prodName', 

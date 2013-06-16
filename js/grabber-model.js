@@ -16,8 +16,8 @@ EGG_TGrab.model = (function() {
      Input validation
    ============================================================================= */
       
-  function validateInput(fn_notify, fields) {
-	   
+  function validateInput(fields, notification) {
+	   // notifications [callback, "message"]
 	   //[{ name  : "BN", check : ['numeric', 'string'], DOM   : '.js-inp-bn'}]
        var c, 
 	       len = fields.length, 
@@ -70,7 +70,7 @@ EGG_TGrab.model = (function() {
 	   });
 
 	   if (error === true) {
-		   fn_notify({ type:'validator', value:message });  
+		   notification[0](message);  
 	   }
 	      
 	   return error;
@@ -263,15 +263,15 @@ EGG_TGrab.model = (function() {
   }
 
   /* get ONE saved item with BN */
-  function deleteItem (bn, fn_notify) {
-      
+  function deleteItem (bn, notifications) {
+      // notifications [callback, "message"]
 	  var storage = LOCAL_STORAGE;
 	  
 	  if (storage !== false) {
 		  
 		  LOCAL_STORAGE.removeItem(bn);
 		  
-		  fn_notify({ type:"delete", value:true });
+		  notifications[0]();
 	 
 	  } else {
 		  
