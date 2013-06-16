@@ -9,10 +9,12 @@ EGG_TGrab.controller = (function() {
      Constants
    ============================================================================= */
 
-  var MESSAGE_Bn              = 'Sorry mate, BN missing or not numeric!',
-	  MESSAGE_DesignerMissing = 'Sorry mate, enter yourself!',
-	  MESSAGE_ProdName        = 'Sorry mate, Product name missing!',
-	  MESSAGE_DEL_WARNING     = '@ Are you sure you want to delete this item?',
+  var MESSAGE_Bn              = '\n- Numeric BN.\n',
+	  MESSAGE_DesignerMissing = '\n- Your NAME.\n',
+	  MESSAGE_ProdName        = '\n- PRODUCT NAME.\n',
+	  MESSAGE_DEL_WARNING     = '\n- SURE to delete?\n',
+	  MESSAGE_NoStorage       = '\n- Sorry, your browser CANNOT SAVE data.\n',
+	  MESSAGE_CannotDelete    = '\n- Sorry, CANNOT DELETE, try again.\n',
 
       $MAIN_CONTAINER        = $('.js-main-container'),
 	  $SELECT_ITEM_SELECTOR  = $('.js-select-saved-items'),
@@ -172,33 +174,60 @@ EGG_TGrab.controller = (function() {
   $('.js-button-save').on('click',function(e) {
 	
 	  var MOD = MODEL,
-	  
-	      // grab value currently in BN form field
+          // grab value currently in BN form field
 	      // because Local Storage sorts alphabetically
 	      initVal = $('.js-inp-bn').val(),
-		  error = MOD.validateInput(VALIDATION_FIELDS, [NOTIFY, ""]);
-  
-	  if (error === false) {
-    	  // model will verify saving status
-	      MOD.saveInput( VIEW.notifyUser );
-	      
-		  VIEW.displaySavedItems( MOD.getSavedItems() );
+
+		  // returns {error:true/false, message:message}
+		  error = MOD.validateInput(VALIDATION_FIELDS);
+	 
+	 // if validation fails	  
+	 if (error.error === true) {
+		 
+		NOTIFY(error.message);    
+	 
+	 // if validation passed start to save  
+	 } else {
+	    // save and receive status
+	    error = MOD.saveInput();
+		// if saving fails
+		if (error === true) {
+		   
+		   NOTIFY(MESSAGE_CannotDelete);
+		
+		} else {
+		   
+		   NOTIFY_COMPLETE();
+		   VIEW.displaySavedItems( MOD.getSavedItems() );		   	
+		}
+		 
+	 }
 		  
-		  $SELECT_ITEM_SELECTOR.val(initVal);  
-	  }
+	 $SELECT_ITEM_SELECTOR.val(initVal);  
+	
   });
  
   
   /* Save form input */
   $('.js-button-delete-bn').on('click',function(e) {
 	  
-	  var bool = confirm(MESSAGE_DEL_WARNING);
+	  var conf = confirm(MESSAGE_DEL_WARNING),
+	      error = false;
 
-      if (bool === true) {
+      if (conf === true) {
 		  
-	     MODEL.deleteItem( $SELECT_ITEM_SELECTOR.val(), [NOTIFY_COMPLETE, ""]);
-      
-	     VIEW.displaySavedItems( MODEL.getSavedItems() );
+	     error = MODEL.deleteItem( $SELECT_ITEM_SELECTOR.val());
+         
+		 if (error === true) {
+			 
+			 NOTIFY(MESSAGE_CannotDelete);
+
+		 } else {
+			
+			NOTIFY_COMPLETE();
+			VIEW.displaySavedItems( MODEL.getSavedItems() );
+			 
+		 }
 		 
 	  }
 	  
@@ -218,22 +247,28 @@ EGG_TGrab.controller = (function() {
 	 
 	 var val = $('.js-inp-prodName').val(),
 	    
-		 error = MODEL.validateInput(NOTIFY, 
+		 error = MODEL.validateInput( 
 		   [{ name:"Product name",    
 		      check:['string'],
 		      DOM:'.js-inp-prodName', 
 			  mess:MESSAGE_ProdName
 		   }]);
+		 
+		if (error.error === true) {
 		   
-        if (error === false) {
+		    NOTIFY(error.message);	
+			
+		} else {
+		    
+			if ($(this).hasClass('js-radio-uppercase')) {
+		        
+				$('.js-inp-prodName').val(val.toUpperCase());
 		   
-		   if ($(this).hasClass('js-radio-uppercase')) {
-		       $('.js-inp-prodName').val(val.toUpperCase());
+		    } else if ($(this).hasClass('js-radio-lowercase')) {
+		        
+				$('.js-inp-prodName').val(val.toLowerCase() );
 		   
-		   } else if ($(this).hasClass('js-radio-lowercase')) {
-			  $('.js-inp-prodName').val(val.toLowerCase() );
-		   
-		   }
+		    }
 	   }
 	 
   });

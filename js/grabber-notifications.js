@@ -35,15 +35,11 @@ EGG_TGrab.notifications = {
   },
   
   notifyUser : function(mess) {
+      if (typeof mess !== "string") { 
+	      throw new Error('String expected'); 
+	  }
 	  
-	  if (typeof mess !== "string") { throw new Error('String expected'); }
-      
-	
-              
-			  alert(mess);  
-          
-		  
-		  
+	  alert( "Please enter/correct/note: \n" + mess);  
   },
   
   customSet: function(handlersArr) {

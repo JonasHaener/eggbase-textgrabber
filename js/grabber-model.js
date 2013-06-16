@@ -16,8 +16,8 @@ EGG_TGrab.model = (function() {
      Input validation
    ============================================================================= */
       
-  function validateInput(fields, notification) {
-	   // notifications [callback, "message"]
+  function validateInput(fields) {
+	  
 	   //[{ name  : "BN", check : ['numeric', 'string'], DOM   : '.js-inp-bn'}]
        var c, 
 	       len = fields.length, 
@@ -37,7 +37,7 @@ EGG_TGrab.model = (function() {
 			       // if val is blank return false
 			       return val === "" || false;
 		       }
-		   }
+		   };
 		   
 	   for (c = 0; c < len; c++) {
 		   
@@ -53,7 +53,7 @@ EGG_TGrab.model = (function() {
 			   
 			   // if an error then assign true
 			   if (error === true) {
-		           message += "@: " + fields[c].mess + "\n";   
+		           message += fields[c].mess;   
 			   }
 			   
      	   });
@@ -69,12 +69,11 @@ EGG_TGrab.model = (function() {
 		   
 	   });
 
-	   if (error === true) {
-		   notification[0](message);  
+	   return { 
+	       error: error,
+		   message: message
 	   }
-	      
-	   return error;
-	    	   
+
   }
 	   
 
@@ -202,7 +201,7 @@ EGG_TGrab.model = (function() {
    ============================================================================= */
 	
   /* retrieve saved Items */
-  function saveInput(fn_notify) {
+  function saveInput() {
 	   
 	   var storage = LOCAL_STORAGE;
        
@@ -214,12 +213,12 @@ EGG_TGrab.model = (function() {
 			  error_arr = [];
 		
 		  storage.setItem(bn, JSON.stringify(coll));
-			  // send user feedback
-			  fn_notify({ type:"save", value:true });
+		  
+		  return false;
 	   
 	   } else {
-		   
-	     fn_notify({ type:"save", value:false });	
+		 // if saving fails return true
+	     return true;	
        
 	   }
   }
@@ -263,7 +262,7 @@ EGG_TGrab.model = (function() {
   }
 
   /* get ONE saved item with BN */
-  function deleteItem (bn, notifications) {
+  function deleteItem (bn) {
       // notifications [callback, "message"]
 	  var storage = LOCAL_STORAGE;
 	  
@@ -271,15 +270,15 @@ EGG_TGrab.model = (function() {
 		  
 		  LOCAL_STORAGE.removeItem(bn);
 		  
-		  notifications[0]();
+		  return false;
 	 
 	  } else {
 		  
-		  fn_notify({ type:"delete", value:false });
+		 return true;
+		 
 	  }
   }
 
-  
   
  /* =============================================================================
      Return model object

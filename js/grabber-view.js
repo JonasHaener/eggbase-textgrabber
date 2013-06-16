@@ -13,92 +13,9 @@ EGG_TGrab.view = (function(window) {
 	  SELECT_ITEM_SELECTOR    = window.document.querySelector('.js-select-saved-items'),
 	  
       TEMPLATE_CLEAN_TEXT     = Handlebars.compile($("#cleaned-text-template").html()),
-      TEMPLATE_FINAL_TEXT     = Handlebars.compile($("#final-text-template").html()),
+      TEMPLATE_FINAL_TEXT     = Handlebars.compile($("#final-text-template").html())
 	  
-	  MESSAGE_NoStorage       = 'Sorry mate, your browser cannot save!',
-	  MESSAGE_CannotDelete    = 'Sorry, cannot delete, try again!';
 
-/* =============================================================================
-     User notifications
-   ============================================================================= */
-  
-  /* report unsaved data to user */
-  function notifyUnsavedData(customEvent, status) {
-	  
-	  switch(status) {
-          
-		  case 'saved':
-		      $('.js-button-save').eq(0).removeClass('js-unsaved');
-			  break;
-	      
-		  case 'unsaved':
-		      $('.js-button-save').eq(0).addClass('js-unsaved');
-			  break;
-	  }
-	  
-  }
-
-
-  /* report process completed */
-  function notifyProcessCompl() {
-	  
-	  var ele = $('.js-button-process-complete').eq(0);
-        
-		 ele.removeClass('js-process-idle').addClass('js-process-complete');
-	         
-		 setTimeout(function() {
-		      ele.removeClass('js-process-complete').addClass('js-process-idle');
-	      }, 1500);
-			  
-	  }
-  
-  function notifyUser(mess) {
-	  
-	  if (typeof mess !== "object") { throw new Error('String expected'); }
-      
-	  var message = "",
-	      messType = mess.type,
-	      status = mess.value,
-		  
-	      /* alert messages to user */
-          alertUser = function(message) {
-              
-			  alert(message);  
-          
-		  };
-		  
-		  
-	  if (messType === "save") {
-		  
-		  if (status === true) {
-		     notifyProcessCompl();
-		  
-		  } else if (status === false) {
-		     alertUser(MESSAGE_NoStorage);
-		  
-		  }
-	  }
-	  
-	  
-	  if (messType === "delete") {
-		  
-		  if (status === true) {
-		     notifyProcessCompl();
-		  
-		  } else if (status === false) {
-		     alertUser(MESSAGE_NoStorage);
-		  
-		  }
-      }
-	  
-	  // received bn (false), designer (false)
-	  if (messType === "validator" && typeof status === 'string') {
-  
-		  alertUser(status); 
-      
-	  }
-  }
-  
 /* =============================================================================
      Write form details
    ============================================================================= */
@@ -162,9 +79,7 @@ EGG_TGrab.view = (function(window) {
 	  init:function() {
 		  
 		  return {
-		      notifyUnsavedData      : notifyUnsavedData, //function (event, status)
-			  notifyUser             : notifyUser, //function (object)
-			  writeFormDetails       : writeFormDetails, //function (bn)
+		      writeFormDetails       : writeFormDetails, //function (bn)
 			  writeFinalTemplate     : writeFinalTemplate, //function (object)
 			  writeCleanTextTemplate : writeCleanTextTemplate, //function (object)
 			  displaySavedItems      : displaySavedItems // function (string)
