@@ -90,7 +90,6 @@ EGG_TGrab.view = (function(window) {
 		  }
       }
 	  
-	  
 	  // received bn (false), designer (false)
 	  if (messType === "validator" && typeof status === 'string') {
   

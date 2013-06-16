@@ -241,7 +241,7 @@ EGG_TGrab.model = (function() {
 	  var storage = LOCAL_STORAGE;
       
 	  try {
-          
+		  
 		  if (storage !== false) {
               
 			  var c,
@@ -256,7 +256,6 @@ EGG_TGrab.model = (function() {
 			  return options; //string
           
 		  } else {
-			
 			  return ""; // string
 		  }
 		  
@@ -266,7 +265,7 @@ EGG_TGrab.model = (function() {
   /* get ONE saved item with BN */
   function deleteItem (bn, fn_notify) {
       
-	  var storage = LOCAL_STORAGE
+	  var storage = LOCAL_STORAGE;
 	  
 	  if (storage !== false) {
 		  
