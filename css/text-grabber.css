@@ -170,6 +170,8 @@ h2 {
 	color: #FFF;
 	box-shadow: #BCBCBC 1px 1px 1px;
 	padding: 0.5em 0.7em;
+	position: relative;
+	
 }
 .inp-button {
 	font-size: 16px;
@@ -250,8 +252,63 @@ h2 {
 
 
 .label {
-	font-size: 1.6em;
+ 	font-size: 1.6em;
 }
+
+
+.inp-button-open-close {
+	background: url(../img/structure_images/close_open_button.png)
+	    no-repeat left center;
+    display: inline-block;
+	height: 21px;
+	width: 21px;
+    position: absolute;
+	top: 8px;
+	right: 36px;
+	z-index: 90;
+	
+}
+
+.inp-button-open-close:hover {
+	 cursor: pointer;
+}
+
+
+.inp-button-open-close-all {
+	background: url(../img/structure_images/close_open_button.png)
+	    no-repeat right center;
+    display: inline-block;
+	height: 21px;
+	width: 21px;
+    position: absolute;
+	top: 8px;
+	right: 8px;
+	z-index: 100;
+	
+}
+.inp-button-open-close-all:hover {
+	 cursor: pointer;
+}
+
+
+fieldset {
+	 overflow: hidden;
+	 /* height set by javascript*/
+	 max-height: 0em;
+	 transition: linear;
+	 transition-property: max-height;
+	 transition-duration: 300ms;
+
+
+
+}
+
+fieldset.js-open {
+	
+	max-height: 20em;
+ 
+}
+
 
 
 
@@ -374,7 +431,7 @@ input[name=designer] {
 
 .section-right 
 input[name=bn] {
-	width: 30%;
+	width: 40%;
 }
 
 .section-right 

@@ -3,7 +3,7 @@
 
 window.EGG_TGrab || (window.EGG_TGrab = {});
 
-EGG_TGrab.controller = (function() {
+EGG_TGrab.controller = function() {
 
 /* =============================================================================
      Constants
@@ -41,10 +41,6 @@ EGG_TGrab.controller = (function() {
 	  NOTIFY    			 = EGG_TGrab.notifications.notifyUser,
 	  NOTIFY_COMPLETE        = EGG_TGrab.notifications.notifyProcessCompl;
 	  
-	  // set notifications
-      //NOTIFY_CUSTOM          = EGG_TGrab.notifications.customSet();
-
-
 /* =============================================================================
      Notifications - Custom Events
    ============================================================================= */
@@ -273,6 +269,46 @@ EGG_TGrab.controller = (function() {
 	 
   });
   
+  $('.js-button-open-close-all').click(function() {
+	  
+	  var $fieldSets = $('fieldset'), allEleClosed = true;
+	  
+	  $fieldSets.each(function() {
+		  
+		  if ($(this).hasClass('js-open')) {
+			allEleClosed = false;  
+			  
+		  }
+		  
+	  });
+	  
+	  if (allEleClosed === true) {
+		  $fieldSets.addClass('js-open');
+
+	  } else {
+          $fieldSets.removeClass('js-open');
+
+      }
+	  
+  });
+  
+  $('.js-button-open-close').click(function() {
+	  
+	  var $fieldSet = $(this).parent().next('fieldset');
+	  
+	  if ($fieldSet.hasClass('js-open')) {
+		  $fieldSet.removeClass('js-open');
+		  
+	  
+	  } else {
+		  $fieldSet.addClass('js-open');
+		
+	  }
+	  
+  });
+  
+  
+ 
   
   
 /* =============================================================================
@@ -286,4 +322,8 @@ EGG_TGrab.controller = (function() {
   $('input, select, textarea').val("");
 
 
-}());
+};
+
+
+// initialize controller on DOMContent loaded
+document.addEventListener('DOMContentLoaded', EGG_TGrab.controller, false);

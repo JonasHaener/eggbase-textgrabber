@@ -96,7 +96,7 @@
     <section class="section-left width-50per s-float-left s-marg-r-3per">
       <div class="bc-grey-lighter box-shadow">
         <h2 class="bc-green">Enter source text</h2>
-        <textarea name="paText" id="paText" class="inp-form-pa_text js-paText">"<header>"Technische Daten    :   Hubschieber, Ausstattung: Hebelkollapser</header><br><footer>Hello Man</footer>"</textarea>
+        <textarea name="paText" id="paText" class="inp-form-pa_text js-paText"></textarea>
       </div>
       <div id="result" class="result js-cleaned-text"></div>
       <div class="result js-final-result-text"></div>
@@ -114,79 +114,124 @@
         </select>
       
       
-        <h2>Desiger / Product B/N:</h2>
-        <input title="Enter your name" type="text" name="designer" id="designer" class="js-inp-designer designer" list="dtl-designers" placeholder="Enter your name">
-        &nbsp;
-        <datalist id="dtl-designers">
-          <option>Jonas Haener</option>
-          <option>Kristine Veseli</option>
-          <option>Holger Klare</option>
-        </datalist>
-        <input type="text" name="bn" id="bn" class="js-inp-bn" placeholder=" Enter BN">&nbsp;
-        <br>
-        <input type='date' name="date" id="date" class="js-inp-date">
+        <h2>Desiger / Product B/N:
+            <span class="js-button-open-close     inp-button-open-close"></span>
+            <span class="js-button-open-close-all inp-button-open-close-all"></span>
+        </h2>
+        <fieldset>
+            <input type="text" name="bn" id="bn" class="js-inp-bn" placeholder=" Enter BN">&nbsp;
+            <br>
+            <input title="Enter your name" type="text" name="designer" id="designer" class="js-inp-designer designer" list="dtl-designers" placeholder="Enter your name">
+            &nbsp;
+            <datalist id="dtl-designers">
+                <option>Jonas Haener</option>
+                <option>Kristine Veseli</option>
+                <option>Holger Klare</option>
+            </datalist>
+            <br>
+            <input type='date' name="date" id="date" class="js-inp-date">
+        </fieldset>
+        
+        
+        
+        <h2>Product:
+            <span class="js-button-open-close     inp-button-open-close"></span>
+            <span class="js-button-open-close-all inp-button-open-close-all"></span>
+        </h2>
+        <fieldset>
+            <label class="label" for="lowercase_input">LCase</label>
+            &nbsp;
+            <input type="radio" name="uppercase" id="lowercase_input" class="js-radio-lowercase" value="lowercase" checked='checked'>
+            &nbsp;&nbsp;
+            <label class="label" for="uppercase_input">UCase</label>
+            &nbsp;
       
-        <h2>Product:</h2>
-        <label class="label" for="lowercase_input">LCase</label>
-        &nbsp;
-        <input type="radio" name="uppercase" id="lowercase_input" class="js-radio-lowercase" value="lowercase" checked='checked'>
-        &nbsp;&nbsp;
-        <label class="label" for="uppercase_input">UCase</label>
-        &nbsp;
+           <input type="radio" name="uppercase" id="uppercase_input" class="js-radio-uppercase" value="uppercase">
       
-        <input type="radio" name="uppercase" id="uppercase_input" class="js-radio-uppercase" value="uppercase">
+           <input type="text" name="product_name" id="product_name" class="js-inp-prodName" placeholder=" German product name">
+           <br>
+           <input type="text" name="model_number" id="model_number" class="js-inp-modelNum" placeholder=" Model number">
+           <br>
+           <label class="label" for="select_brand">Choose brand:&nbsp;&nbsp;</label>
+           <select name="product_brand" class="js-select-brand inp-select" id="select_brand">
+                <option>NONE</option>
+                <option>Conrad-Home</option>
+                <option>Conrad-Computer</option>
+                <option>McCrypt</option>
+                <option>Toolcraft</option>
+                <option>Sygonix</option>
+                <option>Voltcraft</option>
+            </select>
+        </fieldset> 
+        
+        
+        <h2>Features:
+            <span class="js-button-open-close     inp-button-open-close"></span>
+            <span class="js-button-open-close-all inp-button-open-close-all"></span>
+        </h2>
+        <fieldset>
+            <input type="text" name="feature_1" id="feature_1" class="bc-blue-h js-inp-feature-1" placeholder=" Feature 1">
+            <br>
+            <input type="text" name="feature_2" id="feature_2" class=" js-inp-feature-2" placeholder=" Feature 2">
+            <br>
+            <input type="text" name="feature_3" id="feature_3" class=" js-inp-feature-3" placeholder=" Feature 3">
+            <br>
+            <input type="text" name="feature_4" id="feature_4" class=" js-inp-feature-4" placeholder=" Feature 4">
+            <br>
+            <input type="text" name="feature_5" id="feature_5" class=" js-inp-feature-5" placeholder=" Feature 5">
+        </fieldset>
+     
+        
+        <h2>Packing text:
+            <span class="js-button-open-close     inp-button-open-close"></span>
+            <span class="js-button-open-close-all inp-button-open-close-all"></span>
+        </h2>
+        <fieldset>
+            <textarea name="packing_text" id="packing_text" class="js-inp-packingText" placeholder=" Packing text"></textarea>
+        </fieldset>
+     
+     
+        <h2>Feature text:
+            <span class="js-button-open-close     inp-button-open-close"></span>
+            <span class="js-button-open-close-all inp-button-open-close-all"></span>
+        </h2>
+        <fieldset>
+            <textarea name="feature_text" id="feature_text" class="js-inp-featureText" placeholder=" Feature text"></textarea>
+        </fieldset>
+     
+     
+        <h2>Technical data:
+            <span class="js-button-open-close     inp-button-open-close"></span>
+            <span class="js-button-open-close-all inp-button-open-close-all"></span>
+        </h2>
+        <fieldset>
+            <textarea name="tech_data" id="techdata_custom" class="js-inp-techData" placeholder=" Technical data"></textarea>
+            <br>
+            <input type="text" name="tech_data_dim" id="techdata_dimensions" class="js-inp-techData-dimen" placeholder="Dimensions" data-prefix='Abmessungen (B x H x T):'>
+            <br>
+            <input type="text" name="tech_data_weight" id="techdata_weight" class="js-inp-techData-weigth" placeholder="Weight" data-prefix='Gewicht:'>
+         </fieldset>
+     
+     
+        <h2>Delivery contents:
+            <span class="js-button-open-close     inp-button-open-close"></span>
+            <span class="js-button-open-close-all inp-button-open-close-all"></span>
+        </h2>
+        <fieldset>
+            <textarea name="contents" id="delivery_custom" class="js-inp-contents" placeholder=" Delivery contents"></textarea>
+            <br>
+            <input type="text" name="contents_manual" id="delivery_manual" class="js-inp-contents-im" value="Bedienungsanleitung">
+        </fieldset>      
+
       
-        <input type="text" name="product_name" id="product_name" class="js-inp-prodName" placeholder=" German product name">
-        <br>
-        <input type="text" name="model_number" id="model_number" class="js-inp-modelNum" placeholder=" Model number">
-        <br>
-        <label class="label" for="select_brand">Choose brand:&nbsp;&nbsp;</label>
-        <select name="product_brand" class="js-select-brand inp-select" id="select_brand">
-          <option>NONE</option>
-          <option>Conrad-Home</option>
-          <option>Conrad-Computer</option>
-          <option>McCrypt</option>
-          <option>Toolcraft</option>
-          <option>Sygonix</option>
-          <option>Voltcraft</option>
-        </select>
-   
-      
-        <h2>Features:</h2>
-        <input type="text" name="feature_1" id="feature_1" class="bc-blue-h js-inp-feature-1" placeholder=" Feature 1">
-        <br>
-        <input type="text" name="feature_2" id="feature_2" class=" js-inp-feature-2" placeholder=" Feature 2">
-        <br>
-        <input type="text" name="feature_3" id="feature_3" class=" js-inp-feature-3" placeholder=" Feature 3">
-        <br>
-        <input type="text" name="feature_4" id="feature_4" class=" js-inp-feature-4" placeholder=" Feature 4">
-        <br>
-        <input type="text" name="feature_5" id="feature_5" class=" js-inp-feature-5" placeholder=" Feature 5">
-     
-     
-        <h2>Packing text:</h2>
-        <textarea name="packing_text" id="packing_text" class="js-inp-packingText" placeholder=" Packing text"></textarea>
-     
-     
-        <h2>Feature text:</h2>
-        <textarea name="feature_text" id="feature_text" class="js-inp-featureText" placeholder=" Feature text"></textarea>
-     
-     
-        <h2>Technical data:</h2>
-        <textarea name="tech_data" id="techdata_custom" class="js-inp-techData" placeholder=" Technical data"></textarea>
-        <br>
-        <input type="text" name="tech_data_dim" id="techdata_dimensions" class="js-inp-techData-dimen" placeholder="Dimensions" data-prefix='Abmessungen (B x H x T):'>
-        <br>
-        <input type="text" name="tech_data_weight" id="techdata_weight" class="js-inp-techData-weigth" placeholder="Weight" data-prefix='Gewicht:'>
-     
-     
-        <h2>Delivery contents:</h2>
-        <textarea name="contents" id="delivery_custom" class="js-inp-contents" placeholder=" Delivery contents"></textarea>
-        <br>
-        <input type="text" name="contents_manual" id="delivery_manual" class="js-inp-contents-im" value="Bedienungsanleitung">
-      
-        <h2>Remarks:</h2>
-        <textarea name="remarks" id="remarks" class="js-inp-remarks" placeholder="Enter your remarks"></textarea>
+        <h2>Remarks:
+            <span class="js-button-open-close     inp-button-open-close"></span>
+            <span class="js-button-open-close-all inp-button-open-close-all"></span>
+        </h2>
+        <fieldset>        
+            <textarea name="remarks" id="remarks" class="js-inp-remarks" placeholder="Enter your remarks"></textarea>
+        </fieldset>
+        
       </form>
     </section>
   </div>

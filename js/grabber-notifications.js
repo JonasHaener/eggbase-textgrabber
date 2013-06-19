@@ -35,7 +35,8 @@ EGG_TGrab.notifications = {
   },
   
   notifyUser : function(mess) {
-      if (typeof mess !== "string") { 
+      
+	  if (typeof mess !== "string") { 
 	      throw new Error('String expected'); 
 	  }
 	  
