@@ -18,16 +18,17 @@ EGG_TGrab.model = (function() {
       
   function validateInput(fields) {
 	  
-	   //[{ name  : "BN", check : ['numeric', 'string'], DOM   : '.js-inp-bn'}]
+	   //[{ name  : "BN", check : ['numeric', 'string', 'length'], DOM   : '.js-inp-bn'}]
        var c, 
 	       len = fields.length, 
 		   message = "", 
 		   val = "", 
 		   error = false, 
 		   status = [],
+		   messageApplied,
 		   
 		   checker = function(val, criteria) {
-
+                
 		       if (criteria === 'numeric') {
 			       // if val isNan return false
 			       return isNaN(val) || false;
@@ -36,38 +37,38 @@ EGG_TGrab.model = (function() {
 		       if (criteria === 'string') {
 			       // if val is blank return false
 			       return val === "" || false;
-		       }
-		   };
+		       
+			   }
+			   
+		       if (criteria === 'length') {
+			       // if val is blank return false
+			       return val.length !== 6 || false;
+		       
+			   }			   
+    	   };
 		   
 	   for (c = 0; c < len; c++) {
-		   
 		   // grab DOM ele
 		   val = document.querySelector(fields[c].DOM).value;
-           
+		   // messageApplied for each loop cycle to avoid double assignment
+           messageApplied = false;
 		   // loop set criterias
 		   fields[c].check.forEach(function(item,index,array) {
-		       
-			   error = checker(val, item);
-			   console.log('state is: ' + error +" : " + fields[c].name +" : " + item);
-		       status.push(error); 
 			   
-			   // if an error then assign true
-			   if (error === true) {
-		           message += fields[c].mess;   
+			   var err = checker(val, item);
+		       //status.push(error);
+			   
+			   if (err === true && messageApplied === false) {
+				   // set boolean flag
+				   error = true;
+				   messageApplied = true;
+				   message += fields[c].mess;
+				   
 			   }
 			   
      	   });
 		   
 	   }
-	   
-	   // check if errors are present (true's) and return result to controller
-	   status.forEach(function(item, index, array) {
-		   
-		   if (item === true) {
-			   error = true;
-		   }
-		   
-	   });
 
 	   return { 
 	       error: error,
@@ -89,21 +90,20 @@ EGG_TGrab.model = (function() {
 	  // holds text results
       var text = txt.trim(),
       // Regular expressions
-      grep_cleanTags 	= /"*<\/?\w*>"*/ig,
-	  grep_features    = /(Ausstattung|Technische Daten)(\s*(:)\s*)*/ig,
-      grep_techData     = /([\w\s?]*)(?=(<\/techdata))/ig, // (^|\s)Blah(\s|$),
+      grep_spaces 	   = /"*/ig,
+	  grep_subjects    = /(Ausstattung|Technische Daten|Lieferumfang)\s*:\s*/ig,
+      grep_segregation = /\s*·\s*/ig,
 	  
       // extractor iterator function
       extract = function(txt, grep, c) {
-		
+
 			if (grep.length === c) {
 			    return txt;	
 			}
 		
 		    txt = txt.replace(grep[c][0], grep[c][1]);
-        
-		    return extract(txt, grep, c+=1);
-			
+		    
+			return extract(txt, grep, c+=1);
       },
       
 	  // arrange regular expressions in an array
@@ -111,14 +111,14 @@ EGG_TGrab.model = (function() {
 	  // to pass to iterator extractor function
 	  grep_arr    = [];
 	  
-	  grep_arr[0] = [ grep_cleanTags, "" ];
-	  grep_arr[1] = [ grep_features, "\n$1$3 " ];
-	  grep_arr[2] = [ grep_techData, "" ];
+	  grep_arr[0] = [ grep_spaces, "" ];
+	  grep_arr[1] = [ grep_subjects, "@$1:\n" ];
+	  grep_arr[2] = [ grep_segregation, "<br>\n"];
 	  
 	  // return extracted results
 	  return extract(text, grep_arr, 0);
   
-  }
+  }  
   
  /* =============================================================================
      Collect form field input – Return collection
@@ -142,7 +142,6 @@ EGG_TGrab.model = (function() {
 		  for (c = 0; c < collect_len; c += 1) {
 			  
 			  eleItem = collect[c];
-              
 			  // assign name
               if (eleItem.type === 'radio') {
                   collection[ eleItem.name ] = eleItem.checked;
@@ -180,8 +179,14 @@ EGG_TGrab.model = (function() {
 		                         EGG_StrManip.htmlEscape(EGG_StrManip.replLineBr(collection.packing_text), true, ["br"]
 							 ) : collection.packing_text,
 							  
-		  feature_text     : collection.feature_text, 
-		  tech_data        : collection.tech_data,
+		  feature_text     : (bool.htmlEscape === true) ? 
+		                         EGG_StrManip.htmlEscape(EGG_StrManip.replLineBr(collection.feature_text), true, ["br"]
+							 ) : collection.feature_text,
+		  
+		  tech_data        : (bool.htmlEscape === true) ? 
+		                         EGG_StrManip.htmlEscape(EGG_StrManip.replLineBr(collection.tech_data), true, ["br"]
+							 ) : collection.tech_data,
+		  
 		  tech_data_dim    : collection.tech_data_dim, 
 		  tech_data_weight : collection.tech_data_weight, 
 		  contents         : (bool.htmlEscape === true) ? 
@@ -189,7 +194,9 @@ EGG_TGrab.model = (function() {
 							 ) : collection.contents,
 							   
 		  contents_manual  : collection.contents_manual, 
-		  remarks          : collection.remarks
+		  remarks          : (bool.htmlEscape === true) ? 
+		                         EGG_StrManip.htmlEscape(EGG_StrManip.replLineBr(collection.remarks), true, ["br"]
+							 ) : collection.remarks
 		  
       }
    }
@@ -204,16 +211,13 @@ EGG_TGrab.model = (function() {
   function saveInput() {
 	   
 	   var storage = LOCAL_STORAGE;
-       
 	   if (storage) {
-
 		  // collect form input 
           var coll = collectFormInput({ includeTemplate:true }),
 		      bn = coll.bn,
 			  error_arr = [];
 		
 		  storage.setItem(bn, JSON.stringify(coll));
-		  
 		  return false;
 	   
 	   } else {
@@ -229,7 +233,6 @@ EGG_TGrab.model = (function() {
 	
   /* get ONE saved item with BN */
   function getSavedItem (bn) {
-      
 	  return JSON.parse(LOCAL_STORAGE.getItem(bn));
   
   }
@@ -238,11 +241,8 @@ EGG_TGrab.model = (function() {
   function getSavedItems() {
 	  
 	  var storage = LOCAL_STORAGE;
-      
 	  try {
-		  
 		  if (storage !== false) {
-              
 			  var c,
 			      savedItem = null,
 		          options = "";
@@ -256,24 +256,21 @@ EGG_TGrab.model = (function() {
           
 		  } else {
 			  return ""; // string
+			  
 		  }
 		  
-	  } catch(err) { }
+	  } catch(err) { /* no handling */ }
   }
 
   /* get ONE saved item with BN */
   function deleteItem (bn) {
       // notifications [callback, "message"]
 	  var storage = LOCAL_STORAGE;
-	  
 	  if (storage !== false) {
-		  
 		  LOCAL_STORAGE.removeItem(bn);
-		  
 		  return false;
 	 
 	  } else {
-		  
 		 return true;
 		 
 	  }
@@ -286,7 +283,7 @@ EGG_TGrab.model = (function() {
   
   /* get ALL saved items */
   function Constructor() {
-	  
+
 	  this.validateInput    = validateInput;
       this.cleanText        = cleanText;
 	  this.collectFormInput = collectFormInput;
@@ -300,11 +297,9 @@ EGG_TGrab.model = (function() {
   
   /* assign init function to MODEL namespace */
   return { 
-      
 	  init: function() { 
 	      return new Constructor();
 	  }
-  
   };
     
 }());

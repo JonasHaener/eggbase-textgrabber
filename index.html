@@ -23,8 +23,10 @@
   
   <script id="cleaned-text-template" type="text/x-handlebars-template">
     <div class='s-cleaned-text-templ bc-grey-lighter box-shadow'>
-	  <h2 class='templ-head bc-orange'>Cleaned text</h2>
-	  <textarea class="templ-inp-content-cleaned bc-grey-lighter js-inp-cleaned-text" disabled >{{cleanedTxt}}</textarea>
+	  <h2 class='templ-head bc-orange'>Cleaned text
+          <span class="js-button-open-close-paText inp-button-open-close"></span>
+      </h2>
+	  <textarea class="templ-inp-content-cleaned bc-grey-lighter js-inp-cleaned-text  js-open" disabled >{{cleanedTxt}}</textarea>
     </div>	
   </script> 
 
@@ -66,7 +68,7 @@
            <p>{{{packing_text}}}</p>
            <br>
            <h3>Ausstattung:</h3>
-           <p>{{feature_text}}</p>
+           <p>{{{feature_text}}}</p>
            <br>
            <h3>Technische Daten:</h3>
            <p>{{{tech_data}}}</p>
@@ -78,7 +80,7 @@
            <p>{{contents_manual}}</p>
            <br>
            <h3>Hinweis:</h3>
-           <p>{{remarks}}</p>
+           <p>{{{remarks}}}</p>
         </div>
       </div>
   </script> 
@@ -95,8 +97,12 @@
   <div class="working-container">
     <section class="section-left width-50per s-float-left s-marg-r-3per">
       <div class="bc-grey-lighter box-shadow">
-        <h2 class="bc-green">Enter source text</h2>
-        <textarea name="paText" id="paText" class="inp-form-pa_text js-paText"></textarea>
+        
+        <h2 class="bc-green">Enter source text
+            <span class="js-button-open-close-paText inp-button-open-close"></span>
+        </h2>
+        <textarea name="paText" id="paText" class="inp-form-pa_text js-paText js-close"></textarea>
+      
       </div>
       <div id="result" class="result js-cleaned-text"></div>
       <div class="result js-final-result-text"></div>
@@ -120,7 +126,6 @@
         </h2>
         <fieldset>
             <input type="text" name="bn" id="bn" class="js-inp-bn" placeholder=" Enter BN">&nbsp;
-            <br>
             <input title="Enter your name" type="text" name="designer" id="designer" class="js-inp-designer designer" list="dtl-designers" placeholder="Enter your name">
             &nbsp;
             <datalist id="dtl-designers">
@@ -220,7 +225,11 @@
         <fieldset>
             <textarea name="contents" id="delivery_custom" class="js-inp-contents" placeholder=" Delivery contents"></textarea>
             <br>
-            <input type="text" name="contents_manual" id="delivery_manual" class="js-inp-contents-im" value="Bedienungsanleitung">
+            <input type="text" name="contents_manual" id="delivery_manual" class="js-inp-contents-im" list="delivery-contents" placeholder="Instructions">
+            <datalist id="delivery-contents">
+               <option>Bedienungsanleitung</option>
+               <option>Hinweiszettel</option>
+            </datalist>
         </fieldset>      
 
       
@@ -241,7 +250,6 @@
   <script src="js/vendor/handlebars-1.0.0-rc.4.js"></script> 
   <script src="js/plugins.js"></script> 
   <script src="js/EGG_stringManipulator.1.0.js"></script> 
-  <!--<script src="js/grabber.js"></script>-->
   <script src="js/grabber-model.js"></script>
   <script src="js/grabber-view.js"></script>
   <script src="js/grabber-notifications.js"></script>

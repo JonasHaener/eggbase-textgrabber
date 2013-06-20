@@ -17,23 +17,85 @@ EGG_TGrab.view = (function(window) {
 	  
 
 /* =============================================================================
+     Interface
+   ============================================================================= */	  
+  var interf = {
+
+      closeOpenAllFields: function() {
+		  
+		  var $fieldSets = $('fieldset'), allEleClosed = true;
+	      $fieldSets.each(function() {
+			  if ($(this).hasClass('js-open')) {
+				  allEleClosed = false;  
+			  }
+	       });
+	  
+	       if (allEleClosed === true) {
+			  $fieldSets.addClass('js-open');
+		   
+		   } else {
+			  $fieldSets.removeClass('js-open');
+           
+		   }
+      },
+  
+      closeOpenIndiField: function($ele) {
+		  
+		  if (!$ele) { return; }
+		  
+		  var $fieldSet = $ele.parent().next('fieldset');
+	      
+		  if ($fieldSet.hasClass('js-open')) {
+			  $fieldSet.removeClass('js-open');
+		  
+	      } else {
+			  $fieldSet.addClass('js-open');
+		
+	      }
+      },
+	  
+      openClosePaTextField: function($ele) {
+	      
+		  if (!$ele) { return; }
+		  
+		  if ($ele.hasClass('js-open') || !$ele.hasClass('js-close')) {
+			  $ele
+			      .addClass('js-close')
+				  .removeClass('js-open');
+	
+	      } else {
+			  $ele
+			      .addClass('js-open')
+				  .removeClass('js-close');
+		
+	      }
+		  
+	  },
+	  
+	  removeAllInput: function() {
+	      $('input, select, textarea').val("");  
+		  
+	  }
+	  	  
+  }
+	  
+
+/* =============================================================================
      Write form details
    ============================================================================= */
   function writeFormDetails( itemDetails ) {
       // expect string
       if (bn === '' && typeof bn !== 'string') { return false; }
        // retrieve requested item and pass to form fields
-	  
 	  var c, ele = null;
 	  
 	  for (c in itemDetails) {
-	      
 		  ele = document.getElementsByName(c)[0];
 	      
 		  if (ele !== undefined && 'value' in ele) {
 		      ele.value = itemDetails[c];
-		  }
 		  
+		  }
 		  ele = null;
       }
 	  
@@ -53,7 +115,7 @@ EGG_TGrab.view = (function(window) {
   
   /* display cleaned STIBO text*/
   function writeCleanTextTemplate( itemDetails ) {
-      
+
 	  CLEAN_TEXT_CONTAINER.innerHTML = TEMPLATE_CLEAN_TEXT({ cleanedTxt:itemDetails });
   
   }
@@ -66,6 +128,7 @@ EGG_TGrab.view = (function(window) {
       
 	  if (typeof savedItems === 'string') {
 		  SELECT_ITEM_SELECTOR.innerHTML = savedItems;
+	  
 	  }
 	  
   }
@@ -79,7 +142,8 @@ EGG_TGrab.view = (function(window) {
 	  init:function() {
 		  
 		  return {
-		      writeFormDetails       : writeFormDetails, //function (bn)
+		      interf                 : interf,
+			  writeFormDetails       : writeFormDetails, //function (bn)
 			  writeFinalTemplate     : writeFinalTemplate, //function (object)
 			  writeCleanTextTemplate : writeCleanTextTemplate, //function (object)
 			  displaySavedItems      : displaySavedItems // function (string)

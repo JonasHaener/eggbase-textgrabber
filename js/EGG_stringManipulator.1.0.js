@@ -5,6 +5,7 @@ EGG_StrManip = {
 	// "all" escapes html tags as well, if "false" keeps them in place
 	// "all" with "expected": "expected" only treats these elements as secure
 	htmlEscape : function(text, all, exceptedTags) {
+		console.log("IN:  " + text);
 		if (typeof text !== 'string') {
 		   throw new Error('EGG_StrManip says: String expected');	
 		}
@@ -30,31 +31,11 @@ EGG_StrManip = {
 				}
 			});
         }
-		
+		console.log(cleanTxt);
 		return cleanTxt;
 	},
 	
-/*	
-	htmlEscape : function(text, all) {
-		return text.replace(/[<>"&]/g, function (match, pos, orginalTxt) {
-			console.log(match);
-			
-			switch (match) {
-			    case "<" :
-				    return (all === true) ? "&lt;" : "<";	
-			    case ">" :
-				    return (all === true) ? "&gt;" : ">";					
-     		    case "&" :
-				    return "&amp;";					
-                case "\"" :
-				    return "&quot;";	
-            }
-        });
-		
-	},
-*/	
-	
-	// replace "/n /r" with "<br>"
+    // replace "/n /r" with "<br>"
 	replLineBr : function(text) {
 	    return text.replace(/[\r|\n]/g, "<br>");	
 	}
