@@ -10,7 +10,6 @@ EGG_TGrab.model = (function() {
    ============================================================================= */
 
   //var $MAIN_CONTAINER = $('.js-main-container');
-  var LOCAL_STORAGE = ("localStorage" in window) ? window.localStorage : false;
 	
 /* =============================================================================
      Input validation
@@ -210,7 +209,7 @@ EGG_TGrab.model = (function() {
   /* retrieve saved Items */
   function saveInput() {
 	   
-	   var storage = LOCAL_STORAGE;
+	   var storage = ("localStorage" in window) ? window.localStorage : false;
 	   if (storage) {
 		  // collect form input 
           var coll = collectFormInput({ includeTemplate:true }),
@@ -233,14 +232,17 @@ EGG_TGrab.model = (function() {
 	
   /* get ONE saved item with BN */
   function getSavedItem (bn) {
-	  return JSON.parse(LOCAL_STORAGE.getItem(bn));
-  
+	  
+	  var storage = ("localStorage" in window) ? window.localStorage : false;
+	  if (storage) {
+		  return JSON.parse(storage.getItem(bn));
+	  }
   }
   
   /* get ALL saved items */
   function getSavedItems() {
 	  
-	  var storage = LOCAL_STORAGE;
+	  var storage = ("localStorage" in window) ? window.localStorage : false;
 	  try {
 		  if (storage !== false) {
 			  var c,
@@ -265,9 +267,9 @@ EGG_TGrab.model = (function() {
   /* get ONE saved item with BN */
   function deleteItem (bn) {
       // notifications [callback, "message"]
-	  var storage = LOCAL_STORAGE;
+	  var storage = ("localStorage" in window) ? window.localStorage : false;
 	  if (storage !== false) {
-		  LOCAL_STORAGE.removeItem(bn);
+		  storage.removeItem(bn);
 		  return false;
 	 
 	  } else {
