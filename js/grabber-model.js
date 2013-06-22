@@ -282,24 +282,16 @@ EGG_TGrab.model = (function() {
    ============================================================================= */
   
   /* get ALL saved items */
-  function Constructor() {
+  return {
 
-	  this.validateInput    = validateInput;
-      this.cleanText        = cleanText;
-	  this.collectFormInput = collectFormInput;
-	  this.saveInput        = saveInput;
-	  this.getSavedItems    = getSavedItems;
-	  this.getSavedItem     = getSavedItem;
-	  this.deleteItem       = deleteItem;
+	  validateInput    : validateInput,
+      cleanText        : cleanText,
+	  collectFormInput : collectFormInput,
+	  saveInput        : saveInput,
+	  getSavedItems    : getSavedItems,
+	  getSavedItem     : getSavedItem,
+	  deleteItem       : deleteItem
   
   }
-  
-  
-  /* assign init function to MODEL namespace */
-  return { 
-	  init: function() { 
-	      return new Constructor();
-	  }
-  };
     
 }());

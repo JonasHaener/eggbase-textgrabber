@@ -137,10 +137,7 @@ EGG_TGrab.view = (function(window) {
      Initializer function
    ============================================================================= */
 
-  return {
-	  
-	  init:function() {
-		  
+  
 		  return {
 		      interf                 : interf,
 			  writeFormDetails       : writeFormDetails, //function (bn)
@@ -149,7 +146,6 @@ EGG_TGrab.view = (function(window) {
 			  displaySavedItems      : displaySavedItems // function (string)
           };
 		  
-	  }
-  }
+	
  
 }(window));

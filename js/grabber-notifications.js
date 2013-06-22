@@ -3,7 +3,7 @@
 
 window.EGG_TGrab || (window.EGG_TGrab = {});
 
-EGG_TGrab.notifications = {
+EGG_TGrab.notify = {
 
 	/* report unsaved data to user */
     notifyUnsavedData : function(customEvent, status) {
@@ -34,7 +34,7 @@ EGG_TGrab.notifications = {
 			  
   },
   
-  notifyUser : function(mess) {
+  popUp : function(mess) {
       
 	  if (typeof mess !== "string") { 
 	      throw new Error('String expected'); 

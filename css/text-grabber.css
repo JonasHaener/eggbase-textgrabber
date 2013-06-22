@@ -4,10 +4,7 @@
 @font-face {
 	font-family: 'Gotham';
 	src: url('font/GothamRoundedBook.eot?#iefix') format('embedded-opentype'), 
-	     url('font/GothamRoundedBook.woff') format('woff'), 
-	     url('font/GothamRoundedBook.ttf')  format('truetype'),
-		 url('font/GothamRoundedBook.otf')  format('opentype'),
-	     url('font/GothamRoundedBook.svg#GothamRoundedBook') format('svg');
+		 url('font/GothamRoundedBook.otf')  format('opentype');
 	}
 
 html {
