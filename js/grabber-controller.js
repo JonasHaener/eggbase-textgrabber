@@ -9,47 +9,45 @@ EGG_TGrab.controller = function() {
      Constants
    ============================================================================= */
 
-
-  var MESSAGE_Bn              = '\n- Numeric BN, min. length 6.\n',
-	  MESSAGE_DesignerMissing = '\n- Your NAME.\n',
-	  MESSAGE_ProdName        = '\n- PRODUCT NAME.\n',
-	  MESSAGE_DEL_WARNING     = '\n- SURE to delete?\n',
-	  MESSAGE_NoStorage       = '\n- Sorry, your browser CANNOT SAVE data.\n',
-	  MESSAGE_CannotDelete    = '\n- Sorry, CANNOT DELETE, try again.\n',
-
-	  VALIDATION_FIELDS      = [{ name  : "BN",
-		                          check : ['numeric', 'string', 'length'],
-		                          DOM   : '.js-inp-bn',
-								  mess  : MESSAGE_Bn
-								},
-								{ name  : "Designer",
-		                          check : ['string'],
-		                          DOM   : '.js-inp-designer',
+return {
+	MODEL: EGG_TGrab.model.init(),
+	VIEW : EGG_TGrab.view.init(),
+	
+	messages: {
+	   MESSAGE_Bn              : '\n- Numeric BN, min. length 6.\n',
+	   MESSAGE_DesignerMissing : '\n- Your NAME.\n',
+	   MESSAGE_ProdName        : '\n- PRODUCT NAME.\n',
+	   MESSAGE_DEL_WARNING     : '\n- SURE to delete?\n',
+	   MESSAGE_NoStorage       : '\n- Sorry, your browser CANNOT SAVE data.\n',
+	   MESSAGE_CannotDelete    : '\n- Sorry, CANNOT DELETE, try again.\n'
+	},
+	validation_fields: [{ name  : "BN",
+		               check : ['numeric', 'string', 'length'],
+		               DOM   : '.js-inp-bn',
+					   mess  : MESSAGE_Bn
+					   },
+					   { name  : "Designer",
+		               check : ['string'],
+		               DOM   : '.js-inp-designer',
 								  mess  :  MESSAGE_DesignerMissing
-								},
-								{ name  : "Product name",
-		                          check : ['string'],
-		                          DOM   : '.js-inp-prodName',
-								  mess  : MESSAGE_ProdName
-								}
-							   ],
-	  
-	  MODEL                  = EGG_TGrab.model.init(),
-	  VIEW                   = EGG_TGrab.view.init();
-	  
+					   },
+					   { name  : "Product name",
+		               check : ['string'],
+		               DOM   : '.js-inp-prodName',
+					   mess  : MESSAGE_ProdName
+					   }],
+  
 /* =============================================================================
      Notifications - Custom Events
    ============================================================================= */
-  
   //report unsaved data  
-  function notifyUnsavedData(customEvent, status) {
-	 
+  notifyUnsavedData : function(customEvent, status) {
 	  EGG_TGrab.notifications.notifyUnsavedData(customEvent, status);
   
-  }
+  },
   
   // assigns custom trigger events	
-  function addCustomTriggerEvent( o ) {
+  addCustomTriggerEvent: function( o ) {
 	  
 	  var container = $('.js-main-container');
 	  
@@ -67,95 +65,38 @@ EGG_TGrab.controller = function() {
       });
 	  
 	  container = null;
-  }
+  },
   
-  // Form input elements 
-  // Textarea
-  addCustomTriggerEvent( 
-	    { eles       : ['input[type=text]', 'textarea'], 
-		  onEvent    : 'focus', 
-		  custEvent  : 'unsaved', 
-		  status     : 'unsaved',
-		  handler    : notifyUnsavedData
-  });
+  handlers: function() {
+     
+	  var _this = this;
+     
+	  /* Get text and load cleaned text into result */	
+      $('.js-button-grabText').on('click',function(e) {
+	      var model = EGG_TGrab.model.init(),
+		      view = EGG_TGrab.view.init(),
+		      resStr = model.cleanText( $('.js-paText').val() );
+		   // pass cleaned text string to view for display
+		   if (typeof resStr === 'string') {
+			   view.writeCleanTextTemplate(resStr);
+			   view.interf.openClosePaTextField($('.js-paText'));
 		
-  // Radio input elements 
-  addCustomTriggerEvent( 
-	    { eles       : ['input[type=radio]'], 
-		  onEvent    : 'click', 
-		  custEvent  : 'unsaved', 
-		  status     : 'unsaved',
-		  handler    : notifyUnsavedData
-  
-  });
-		
-  // Date input elements 
-  addCustomTriggerEvent( 
-	    { eles       : ['input[type=date]'], 
-		  onEvent    : 'focus', 
-		  custEvent  : 'unsaved', 
-		  status     : 'unsaved',
-		  handler    : notifyUnsavedData
-  
-  });				
+		  }
+      });
 
-  // Save button 
-  addCustomTriggerEvent( 
-	    
-		{ eles       : ['.js-button-save'], 
-		  onEvent    : 'click', 
-		  custEvent  : 'saved', 
-		  status     : 'saved',
-		  handler    : notifyUnsavedData
-		
-  });				
-
-  // Brand selector
-  addCustomTriggerEvent( 
-	    { eles       : ['.js-select-brand'], 
-		  onEvent    : 'change', 
-		  custEvent  : 'unsaved', 
-		  status     : 'unsaved',
-		  handler    : notifyUnsavedData
-  });		
-
-
-
-/* =============================================================================
-     Events
-   ============================================================================= */
- 
-  /* Get text and load cleaned text into result */	
-  $('.js-button-grabText').on('click',function(e) {
-	    
-		var model = EGG_TGrab.model.init(),
-		    view = EGG_TGrab.view.init(),
-		    resStr = model.cleanText( $('.js-paText').val() );
-		// pass cleaned text string to view for display
-		if (typeof resStr === 'string') {
-			
-			view.writeCleanTextTemplate(resStr);
-			view.interf.openClosePaTextField($('.js-paText'));
-		
-		}
-        
-			
-	});
-
-  
-  /* Write final text template */
-  $('.js-button-write-template').on('click',function(e) {
+     /* Write final text template */
+     $('.js-button-write-template').on('click',function(e) {
 	  var model = EGG_TGrab.model.init(),
 		  view = EGG_TGrab.view.init();
 	  // returns object
       view.writeFinalTemplate( model.collectFormInput({ htmlEscape:true }) );
 	  view.interf.openClosePaTextField( $('.js-inp-cleaned-text') );
 
-  });
+     });
 
 
-  /* Save form input */
-  $('.js-button-save').on('click',function(e) {
+     /* Save form input */
+     $('.js-button-save').on('click',function(e) {
 	
 	  var model  = EGG_TGrab.model.init(),
 	      notify = EGG_TGrab.notifications.notifyUser,
@@ -187,13 +128,13 @@ EGG_TGrab.controller = function() {
 		 
 	 }
 		  
-	 $('.js-select-saved-items').val(initVal);  
+	   $('.js-select-saved-items').val(initVal);  
 	
-  });
+     });
  
   
-  /* Save form input */
-  $('.js-button-delete-bn').on('click',function(e) {
+    /* Save form input */
+    $('.js-button-delete-bn').on('click',function(e) {
 
 	  var model  = EGG_TGrab.model.init(),
 	      notify = EGG_TGrab.notifications.notifyUser,
@@ -217,10 +158,10 @@ EGG_TGrab.controller = function() {
 		 }
 	  }
 	  
-  });
+    });
   
-  /* Display saved items BNs */
-  $('.js-select-saved-items').on('change',function(e) {
+    /* Display saved items BNs */
+    $('.js-select-saved-items').on('change',function(e) {
 	  // retrieve selected items in option select
 	  var model  = EGG_TGrab.model.init(),
 	      notify = EGG_TGrab.notifications.notifyUser,
@@ -229,10 +170,10 @@ EGG_TGrab.controller = function() {
 		  savedItem = model.getSavedItem( $('.js-select-saved-items').val() );
 		  
 	  view.writeFormDetails(savedItem);
-  });
+    });
   
-  // radio buttons
-  $('.js-radio-uppercase, .js-radio-lowercase').on('change',function(e) {
+    // radio buttons
+    $('.js-radio-uppercase, .js-radio-lowercase').on('change',function(e) {
 	
 	 var model  = EGG_TGrab.model.init(),
 	     notify = EGG_TGrab.notifications.notifyUser,
@@ -258,44 +199,123 @@ EGG_TGrab.controller = function() {
 		    $('.js-inp-prodName').val(val.toLowerCase() );
 		   
 		 }
-	 }
-  });
+	  }
+    });
   
     /* Control cleaned text input field for editing */
-  $('.js-main-container')
+    $('.js-main-container')
   
-  .on('dblclick', '.js-inp-cleaned-text', function(e) {
+   .on('dblclick', '.js-inp-cleaned-text', function(e) {
       $(this).prop('disabled',"");
       
-  })
+   })
    
-  .on('blur', '.js-inp-cleaned-text' ,function(e) {
+   .on('blur', '.js-inp-cleaned-text' ,function(e) {
      $(this).prop('disabled','disabled');
       
-  })
+   })
 
   .on('click', '.js-button-open-close-all', function() {
 	
-	 var view  = EGG_TGrab.view.init();
-     view.interf.closeOpenAllFields();
+     this.VIEW.interf.closeOpenAllFields();
 	  
   })
   
   .on('click', '.js-button-open-close', function() {
-	
-	  var view  = EGG_TGrab.view.init();
-      VIEW.interf.closeOpenIndiField( $(this) );	  
+	this.VIEW.interf.closeOpenIndiField( $(this) );	  
   
   })
   
   .on('click', '.js-button-open-close-paText', function() {
 	  
-	  var $ele = $(this).parent().next('textarea'),
-	      view  = EGG_TGrab.view.init();
-
-	  view.interf.openClosePaTextField( $ele );
+	  var $ele = $(this).parent().next('textarea');
+	  this.VIEW.interf.openClosePaTextField( $ele );
 	  
-  });
+   });
+	  
+	  
+  },
+  addCustomTriggers: function() {
+	 var cutomTrigger = this.addCustomTriggerEvent;
+	     notifyUnsavedData = this.notifyUnsavedData;
+	  // Form input elements 
+	  // Textarea
+	  cutomTrigger( 
+			{ eles       : ['input[type=text]', 'textarea'], 
+			  onEvent    : 'focus', 
+			  custEvent  : 'unsaved', 
+			  status     : 'unsaved',
+			  handler    : notifyUnsavedData
+	  });
+			
+	  // Radio input elements 
+	  cutomTrigger( 
+			{ eles       : ['input[type=radio]'], 
+			  onEvent    : 'click', 
+			  custEvent  : 'unsaved', 
+			  status     : 'unsaved',
+			  handler    : notifyUnsavedData
+	  
+	  });
+			
+	  // Date input elements 
+	  cutomTrigger( 
+			{ eles       : ['input[type=date]'], 
+			  onEvent    : 'focus', 
+			  custEvent  : 'unsaved', 
+			  status     : 'unsaved',
+			  handler    : notifyUnsavedData
+	  
+	  });				
+	
+	  // Save button 
+	  cutomTrigger( 
+			
+			{ eles       : ['.js-button-save'], 
+			  onEvent    : 'click', 
+			  custEvent  : 'saved', 
+			  status     : 'saved',
+			  handler    : notifyUnsavedData
+			
+	  });				
+	
+	  // Brand selector
+	  cutomTrigger( 
+			{ eles       : ['.js-select-brand'], 
+			  onEvent    : 'change', 
+			  custEvent  : 'unsaved', 
+			  status     : 'unsaved',
+			  handler    : notifyUnsavedData
+	  });		
+	
+	
+	
+		  
+		  
+		  
+  },
+  
+  intialize: function() {
+	 this.handlers();
+	 this.addCustomTriggers();
+	   /* Display saved items BNs */
+     this.VIEW.displaySavedItems( this.MODEL.getSavedItems() );
+  
+     // clean all input
+     this.VIEW.interf.removeAllInput(); 
+	      
+  }
+  
+}
+  
+  
+
+
+
+/* =============================================================================
+     Events
+   ============================================================================= */
+ 
   
   
  
@@ -303,11 +323,10 @@ EGG_TGrab.controller = function() {
      Initial runs
    ============================================================================= */
   
-  /* Display saved items BNs */
-  VIEW.displaySavedItems( MODEL.getSavedItems() );
-  
-  // clean all input
-  VIEW.interf.removeAllInput();
+
+
+
+
 
 
 };
