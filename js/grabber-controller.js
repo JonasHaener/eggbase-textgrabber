@@ -9,7 +9,6 @@ EGG_TGrab.controller = function() {
      Constants
    ============================================================================= */
 
-
   var MESSAGE_Bn              = '\n- Numeric BN, min. length 6.\n',
 	  MESSAGE_DesignerMissing = '\n- Your NAME.\n',
 	  MESSAGE_ProdName        = '\n- PRODUCT NAME.\n',
@@ -17,6 +16,8 @@ EGG_TGrab.controller = function() {
 	  MESSAGE_NoStorage       = '\n- Sorry, your browser CANNOT SAVE data.\n',
 	  MESSAGE_CannotDelete    = '\n- Sorry, CANNOT DELETE, try again.\n',
 
+      $MAIN_CONTAINER        = $('.js-main-container'),
+	  $SELECT_ITEM_SELECTOR  = $('.js-select-saved-items'),
 	  VALIDATION_FIELDS      = [{ name  : "BN",
 		                          check : ['numeric', 'string', 'length'],
 		                          DOM   : '.js-inp-bn',
@@ -35,7 +36,10 @@ EGG_TGrab.controller = function() {
 							   ],
 	  
 	  MODEL                  = EGG_TGrab.model.init(),
-	  VIEW                   = EGG_TGrab.view.init();
+	  VIEW                   = EGG_TGrab.view.init(),
+	  
+	  NOTIFY    			 = EGG_TGrab.notifications.notifyUser,
+	  NOTIFY_COMPLETE        = EGG_TGrab.notifications.notifyProcessCompl;
 	  
 /* =============================================================================
      Notifications - Custom Events
@@ -51,7 +55,7 @@ EGG_TGrab.controller = function() {
   // assigns custom trigger events	
   function addCustomTriggerEvent( o ) {
 	  
-	  var container = $('.js-main-container');
+	  var container = $MAIN_CONTAINER;
 	  
 	  if (typeof o !== 'object') { 
 	      throw new Error("textgrabber says: Object expected");
@@ -127,15 +131,13 @@ EGG_TGrab.controller = function() {
  
   /* Get text and load cleaned text into result */	
   $('.js-button-grabText').on('click',function(e) {
-	    
-		var model = EGG_TGrab.model.init(),
-		    view = EGG_TGrab.view.init(),
-		    resStr = model.cleanText( $('.js-paText').val() );
+	
+		var resStr = MODEL.cleanText( $('.js-paText').val() );
 		// pass cleaned text string to view for display
 		if (typeof resStr === 'string') {
 			
-			view.writeCleanTextTemplate(resStr);
-			view.interf.openClosePaTextField($('.js-paText'));
+			VIEW.writeCleanTextTemplate(resStr);
+			VIEW.interf.openClosePaTextField('.js-paText');
 		
 		}
         
@@ -145,11 +147,9 @@ EGG_TGrab.controller = function() {
   
   /* Write final text template */
   $('.js-button-write-template').on('click',function(e) {
-	  var model = EGG_TGrab.model.init(),
-		  view = EGG_TGrab.view.init();
 	  // returns object
-      view.writeFinalTemplate( model.collectFormInput({ htmlEscape:true }) );
-	  view.interf.openClosePaTextField( $('.js-inp-cleaned-text') );
+      VIEW.writeFinalTemplate( MODEL.collectFormInput({ htmlEscape:true }) );
+	  VIEW.interf.openClosePaTextField( $('.js-inp-cleaned-text') );
 
   });
 
@@ -157,62 +157,55 @@ EGG_TGrab.controller = function() {
   /* Save form input */
   $('.js-button-save').on('click',function(e) {
 	
-	  var model  = EGG_TGrab.model.init(),
-	      notify = EGG_TGrab.notifications.notifyUser,
-		  view  = EGG_TGrab.view.init(),
-		  notify_complete = EGG_TGrab.notifications.notifyProcessCompl,
+	  var MOD = MODEL,
           // grab value currently in BN form field
 	      // because Local Storage sorts alphabetically
 	      initVal = $('.js-inp-bn').val(),
 		  // returns {error:true/false, message:message}
-		  error = model.validateInput(VALIDATION_FIELDS);
+		  error = MOD.validateInput(VALIDATION_FIELDS);
 	 
 	 // if validation fails	  
 	 if (error.error === true) {
-		notify(error.message);    
+		NOTIFY(error.message);    
 	 
 	 // if validation passed start to save  
 	 } else {
 	    // save and receive status
-	    error = model.saveInput();
+	    error = MOD.saveInput();
 		// if saving fails
 		if (error === true) {
-		   notify(MESSAGE_CannotDelete);
+		   NOTIFY(MESSAGE_CannotDelete);
 		
 		} else {
-		   notify_complete();
-		   view.displaySavedItems( model.getSavedItems() );		   	
+		   NOTIFY_COMPLETE();
+		   VIEW.displaySavedItems( MOD.getSavedItems() );		   	
 		
 		}
 		 
 	 }
 		  
-	 $('.js-select-saved-items').val(initVal);  
+	 $SELECT_ITEM_SELECTOR.val(initVal);  
 	
   });
  
   
   /* Save form input */
   $('.js-button-delete-bn').on('click',function(e) {
-
-	  var model  = EGG_TGrab.model.init(),
-	      notify = EGG_TGrab.notifications.notifyUser,
-		  notify_complete = EGG_TGrab.notifications.notifyProcessCompl,
-		  view  = EGG_TGrab.view.init(),
-		  conf = confirm(MESSAGE_DEL_WARNING),
+	  
+	  var conf = confirm(MESSAGE_DEL_WARNING),
 	      error = false;
 
       if (conf === true) {
-	     error = model.deleteItem( $('.js-select-saved-items').val());
+	     error = MODEL.deleteItem( $SELECT_ITEM_SELECTOR.val());
 		 
 		 if (error === true) {
-			 notify(MESSAGE_CannotDelete);
+			 NOTIFY(MESSAGE_CannotDelete);
 
 		 } else {
-			notify_complete();
-			view.displaySavedItems( model.getSavedItems() );
+			NOTIFY_COMPLETE();
+			VIEW.displaySavedItems( MODEL.getSavedItems() );
 			// clean all input
-			view.interf.removeAllInput();
+			VIEW.interf.removeAllInput();
 			 
 		 }
 	  }
@@ -220,35 +213,26 @@ EGG_TGrab.controller = function() {
   });
   
   /* Display saved items BNs */
-  $('.js-select-saved-items').on('change',function(e) {
+  $SELECT_ITEM_SELECTOR.on('change',function(e) {
 	  // retrieve selected items in option select
-	  var model  = EGG_TGrab.model.init(),
-	      notify = EGG_TGrab.notifications.notifyUser,
-		  notify_complete = EGG_TGrab.notifications.notifyProcessCompl,
-		  view  = EGG_TGrab.view.init(),
-		  savedItem = model.getSavedItem( $('.js-select-saved-items').val() );
-		  
-	  view.writeFormDetails(savedItem);
+	  var savedItem = MODEL.getSavedItem( $SELECT_ITEM_SELECTOR.val() );
+	  VIEW.writeFormDetails(savedItem);
   });
   
   // radio buttons
   $('.js-radio-uppercase, .js-radio-lowercase').on('change',function(e) {
-	
-	 var model  = EGG_TGrab.model.init(),
-	     notify = EGG_TGrab.notifications.notifyUser,
-		 notify_complete = EGG_TGrab.notifications.notifyProcessCompl,
-		 view  = EGG_TGrab.view.init(),
-		 val = $('.js-inp-prodName').val(),
+	 
+	 var val = $('.js-inp-prodName').val(),
 		 
-		 error = model.validateInput( 
+		 error = MODEL.validateInput( 
 		   [{ name:"Product name",    
 		      check:['string'],
 		      DOM:'.js-inp-prodName', 
-			  mess: MESSAGE_ProdName
+			  mess:MESSAGE_ProdName
 		   }]);
 		 
 	 if (error.error === true) {
-	     notify(error.message);	
+	     NOTIFY(error.message);	
 			
 	 } else {
 	     if ($(this).hasClass('js-radio-uppercase')) {
@@ -275,25 +259,18 @@ EGG_TGrab.controller = function() {
   })
 
   .on('click', '.js-button-open-close-all', function() {
-	
-	 var view  = EGG_TGrab.view.init();
-     view.interf.closeOpenAllFields();
+      VIEW.interf.closeOpenAllFields();
 	  
   })
   
   .on('click', '.js-button-open-close', function() {
-	
-	  var view  = EGG_TGrab.view.init();
       VIEW.interf.closeOpenIndiField( $(this) );	  
   
   })
   
   .on('click', '.js-button-open-close-paText', function() {
-	  
-	  var $ele = $(this).parent().next('textarea'),
-	      view  = EGG_TGrab.view.init();
-
-	  view.interf.openClosePaTextField( $ele );
+	  var $ele = $(this).parent().next('textarea');
+	  VIEW.interf.openClosePaTextField( $ele );
 	  
   });
   
