@@ -42,7 +42,7 @@ EGG_TGrab.controller.logic = function() {
 	  if (typeof o !== 'object') { 
 	      throw new Error("textgrabber says: Object expected");
 	  }
-	  // assign custom events to eventReceiver ('body')
+	  // assign custom events to eventReceiver $('.js-main-container')
 	  container.bind(o.custEvent, o.handler);
 	  
 	  // loop over tags and assign custom trigger event

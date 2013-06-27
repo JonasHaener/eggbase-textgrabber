@@ -43,9 +43,13 @@ EGG_TGrab.notify = {
 	  alert( "Please enter/correct/note: \n" + mess);  
   },
   
+  // custom assign function is unused for
+  // the time being
   customSet: function(handlersArr) {
 	   
-	   var o = {}, c;
+	   var o = {}, 
+	       a, 
+		   c;
 	   
 	   o.handlers = {};
 	   
@@ -53,7 +57,7 @@ EGG_TGrab.notify = {
 	   o.notify = function(kind, fn) {
 	       if (kind in o.handlers) {
 			   if (typeof fn === 'undefined') {
-			       EGG_TGrab.notifications.notifyUser(o.handlers[kind]);
+			       EGG_TGrab.notify.popUp(o.handlers[kind]);
 			   } else {
 				   fn();   
 			   }
@@ -62,7 +66,7 @@ EGG_TGrab.notify = {
 		
 		//[ { kind:'click', handler:func }]
 		for (c = 0; c < handlersArr.length; c++) {
-     		var a = handlersArr[c];
+     		a = handlersArr[c];
 			console.log(a.kind +":" + a.handler);
 		   	o.handlers[a.kind] = a.handler;
     	}
