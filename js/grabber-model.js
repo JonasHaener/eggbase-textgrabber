@@ -90,9 +90,10 @@ EGG_TGrab.model = (function() {
 	  // holds text results
       var text = txt.trim(),
       // Regular expressions
-      grep_spaces 	   = /"*/ig,
-	  grep_subjects    = /(Ausstattung|Technische Daten|Lieferumfang)\s*:\s*/ig,
-      grep_segregation = /\s*·\s*/ig,
+      grep_spaces 	   = /["]*/ig,
+	  grep_subjects    = /\s*(Ausstattung|Technische Daten|Lieferumfang|Hinweis)\s*:\s*/ig,
+      grep_tags        = /\s*<\/?\w*\/?>\s*/ig,
+	  grep_segregation = /\s*(•|·)\s*/ig, //•|
 	  
       // extractor iterator function
       extract = function(txt, grep, c) {
@@ -112,9 +113,10 @@ EGG_TGrab.model = (function() {
 	  grep_arr    = [];
 	  
 	  grep_arr[0] = [ grep_spaces, "" ];
-	  grep_arr[1] = [ grep_subjects, "@$1:\n" ];
-	  grep_arr[2] = [ grep_segregation, "<br>\n"];
-	  
+	  grep_arr[1] = [ grep_tags, " "];
+	  grep_arr[2] = [ grep_subjects, "\n\n@$1:\n" ];
+	  grep_arr[3] = [ grep_segregation, "<br>\n" ];
+	  	  
 	  // return extracted results
 	  return extract(text, grep_arr, 0);
   
@@ -167,8 +169,7 @@ EGG_TGrab.model = (function() {
 		  lang_code        : 'GER',
 		  model_number     : collection.model_number,
 		  product_brand    : collection.product_brand,
-		  product_name     : (collection.uppercase === true) ? 
-		                         collection.product_name.toUpperCase() : collection.product_name,
+		  product_name     : collection.product_name,
 								   	
 		  feature_1        : collection.feature_1, 
           feature_2        : collection.feature_2, 
@@ -176,26 +177,26 @@ EGG_TGrab.model = (function() {
 		  feature_4        : collection.feature_4, 
 		  feature_5        : collection.feature_5,
 		  packing_text     : (bool.htmlEscape === true) ? 
-		                         EGG_StrManip.htmlEscape(EGG_StrManip.replLineBr(collection.packing_text), true, ["br"]
+		                         EGG_StrManip.htmlEscape(collection.packing_text, true, ["br"]
 							 ) : collection.packing_text,
 							  
 		  feature_text     : (bool.htmlEscape === true) ? 
-		                         EGG_StrManip.htmlEscape(EGG_StrManip.replLineBr(collection.feature_text), true, ["br"]
+		                         EGG_StrManip.htmlEscape(collection.feature_text, true, ["br"]
 							 ) : collection.feature_text,
 		  
 		  tech_data        : (bool.htmlEscape === true) ? 
-		                         EGG_StrManip.htmlEscape(EGG_StrManip.replLineBr(collection.tech_data), true, ["br"]
+		                         EGG_StrManip.htmlEscape(collection.tech_data, true, ["br"]
 							 ) : collection.tech_data,
 		  
 		  tech_data_dim    : collection.tech_data_dim, 
 		  tech_data_weight : collection.tech_data_weight, 
 		  contents         : (bool.htmlEscape === true) ? 
-		                         EGG_StrManip.htmlEscape(EGG_StrManip.replLineBr(collection.contents), true, ["br"]
+		                         EGG_StrManip.htmlEscape(collection.contents, true, ["br"]
 							 ) : collection.contents,
 							   
 		  contents_manual  : collection.contents_manual, 
 		  remarks          : (bool.htmlEscape === true) ? 
-		                         EGG_StrManip.htmlEscape(EGG_StrManip.replLineBr(collection.remarks), true, ["br"]
+		                         EGG_StrManip.htmlEscape(collection.remarks, true, ["br"]
 							 ) : collection.remarks
 		  
       }

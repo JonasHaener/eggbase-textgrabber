@@ -7,7 +7,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title>PA text | Templater</title>
+<title>Toaster</title>
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width">
 <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -36,13 +36,12 @@
         <div>
           <p>[&nbsp;Date:&nbsp;{{date}}&nbsp;]</p>
           <p>[&nbsp;Designer:&nbsp;&nbsp;{{designer}}&nbsp;]</p>
-          <br>
+          <h3>Lang:</h3>
+		  <p>{{lang_code}}</p>
           <h3>BN:</h3>
 		  <p>{{bn}}</p>
 		  <h3>Product brand:</h3>
 		  <p>{{product_brand}}</p>
-          <h3>Lang:</h3>
-		  <p>{{lang_code}}</p>
           <h3>Model-No.:</h3> 
 		  <p>{{model_number}}</p>
           <h3>Product name:</h3>
@@ -65,6 +64,7 @@
 			{{/if}}
            </ul>
            <br>
+		   <h3>Verpackungstext:</h3>
            <p>{{{packing_text}}}</p>
            <br>
            <h3>Ausstattung:</h3>
@@ -160,15 +160,21 @@
            <label class="label" for="select_brand">Choose brand:&nbsp;&nbsp;</label>
            <select name="product_brand" class="js-select-brand inp-select" id="select_brand">
                 <option>NONE</option>
-                <option>Conrad-Home</option>
-                <option>Conrad-Computer</option>
+                <option>BaseTech</option>
+                <option>Conrad</option>
+                <option>Conrad Elec</option>
+                <option>Conrad Energy</option>
+                <option>Eurochron</option>
                 <option>McCrypt</option>
+                <option>Renkforce</option>
+                <option>Speaka</option>
+                <option>Speaka Connect</option>
+                <option>Speaka Control</option>
+                <option>Speaka Profess</option>
                 <option>Toolcraft</option>
-                <option>Sygonix</option>
                 <option>Voltcraft</option>
             </select>
         </fieldset> 
-        
         
         <h2>Features:
             <span class="js-button-open-close     inp-button-open-close"></span>

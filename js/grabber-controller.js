@@ -30,7 +30,6 @@ EGG_TGrab.controller.logic = function() {
   
   //report unsaved data  
   function notifyUnsavedData(customEvent, status) {
-	 
 	  EGG_TGrab.notify.notifyUnsavedData(customEvent, status);
   
   }
@@ -116,26 +115,28 @@ EGG_TGrab.controller.logic = function() {
   $('.js-button-grabText').on('click',function(e) {
 	    var view = EGG_TGrab.view,
 		model = EGG_TGrab.model,
-		resStr = model.cleanText( $('.js-paText').val() );
+		resStr = model.cleanText($('.js-paText').val());
+		
 		// pass cleaned text string to view for display
 		if (typeof resStr === 'string') {
-			
 			view.writeCleanTextTemplate(resStr);
-			view.interf.openClosePaTextField($('.js-paText'));
+			// supply tru to close all items unconditionally
+			view.interf.openClosePaTextField($('.js-paText'), true);
 		
 		}
         
-			
 	});
 
   
   /* Write final text template */
   $('.js-button-write-template').on('click',function(e) {
+	  
 	  var view = EGG_TGrab.view, 
 	  model = EGG_TGrab.model;
+	  
 	  // returns object
       view.writeFinalTemplate( model.collectFormInput({ htmlEscape:true }) );
-	  view.interf.openClosePaTextField( $('.js-inp-cleaned-text') );
+	  view.interf.openClosePaTextField( $('.js-paText,.js-inp-cleaned-text'), true );
 
   });
 
@@ -206,8 +207,12 @@ EGG_TGrab.controller.logic = function() {
   /* Display saved items BNs */
   $('.js-select-saved-items').on('change',function(e) {
 	  // retrieve selected items in option select
-	  var savedItem = EGG_TGrab.model.getSavedItem( $(this).val() );
-	  EGG_TGrab.view.writeFormDetails(savedItem);
+	  var view = EGG_TGrab.view,
+	      savedItem = EGG_TGrab.model.getSavedItem( $(this).val() );
+		  
+	  view.writeFormDetails(savedItem);
+	  view.interf.closeOpenAllInputFields({ forceOpenAll:true });
+	  
   });
   
   // radio buttons
@@ -238,27 +243,27 @@ EGG_TGrab.controller.logic = function() {
   
     /* Control cleaned text input field for editing */
   $('.js-main-container')
-  
+  // cleaned text field left section 
   .on('dblclick', '.js-inp-cleaned-text', function(e) {
       $(this).prop('disabled',"");
       
   })
-   
+  // cleaned text field left section 
   .on('blur', '.js-inp-cleaned-text' ,function(e) {
      $(this).prop('disabled','disabled');
       
   })
-
+  // button in headers right section, open close all fields  
   .on('click', '.js-button-open-close-all', function() {
-      EGG_TGrab.view.interf.closeOpenAllFields();
+      EGG_TGrab.view.interf.closeOpenAllInputFields();
 	  
   })
-  
+  // button in headers right section, open close single field  
   .on('click', '.js-button-open-close', function() {
-      EGG_TGrab.view.interf.closeOpenIndiField( $(this) );	  
+      EGG_TGrab.view.interf.closeOpenTextField( $(this) );	  
   
   })
-  
+  // button in headers left section, open close input text fields   
   .on('click', '.js-button-open-close-paText', function() {
 	  var $ele = $(this).parent().next('textarea');
 	  EGG_TGrab.view.interf.openClosePaTextField( $ele );
@@ -273,9 +278,10 @@ EGG_TGrab.controller.logic = function() {
   
   /* Display saved items BNs */
   EGG_TGrab.view.displaySavedItems( EGG_TGrab.model.getSavedItems() );
-  
   // clean all input
   EGG_TGrab.view.interf.removeAllInput();
+  // grab selected item and write form data 
+  EGG_TGrab.view.writeFormDetails( EGG_TGrab.model.getSavedItem($('.js-select-saved-items').val()) );
 
 
 };

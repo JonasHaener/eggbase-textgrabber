@@ -25,9 +25,14 @@ body {
 
 }
 
-p, h1 {
+p, h1, li {
 	padding: 0;
 	margin: 0;	
+}
+
+ul {
+    margin: 0 0 0 1em;
+	padding: 0 0 0 1em;
 }
 
 *{ box-sizing: border-box; }
@@ -178,7 +183,7 @@ p, li, h3 {
 
 h2 {
 	font-size: 1.6em;
-	background-color: rgb(104, 104, 104);
+	background-color: #4F4F4F;
 	color: #FFF;
 	box-shadow: #BCBCBC 1px 1px 1px;
 	padding: 0.5em 0.7em;

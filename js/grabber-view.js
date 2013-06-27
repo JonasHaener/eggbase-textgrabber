@@ -21,26 +21,39 @@ EGG_TGrab.view = (function(window) {
    ============================================================================= */	  
   var interf = {
 
-      closeOpenAllFields: function() {
+      closeOpenAllInputFields: function(obj) {
 		  
-		  var $fieldSets = $('fieldset'), allEleClosed = true;
-	      $fieldSets.each(function() {
+		  var $fieldSets = $('fieldset'), 
+		  allEleClosed = true;
+		 
+		  // conditions to force or close open all items
+		  if (obj) {
+			  var forceOpenAll = obj.forceOpenAll || false,
+		          forceCloseAll = obj.forceOpenAll || false;
+		  }
+		  
+		  $fieldSets.each(function() {
 			  if ($(this).hasClass('js-open')) {
 				  allEleClosed = false;  
 			  }
-	       });
+	      
+		  });
 	  
-	       if (allEleClosed === true) {
-			  $fieldSets.addClass('js-open');
+		  if (allEleClosed === true || forceOpenAll === true) {
+		      $fieldSets
+			      .addClass('js-open')
+				  .removeClass('js-close');
 		   
-		   } else {
-			  $fieldSets.removeClass('js-open');
+		  } else if(allEleClosed !== true || forceCloseAll === true) {
+			  $fieldSets
+			      .addClass('js-close')
+				  .removeClass('js-open');
            
-		   }
+		  }
       },
   
-      closeOpenIndiField: function($ele) {
-		  
+      closeOpenTextField: function($ele) {
+		
 		  if (!$ele) { return; }
 		  
 		  var $fieldSet = $ele.parent().next('fieldset');
@@ -54,10 +67,19 @@ EGG_TGrab.view = (function(window) {
 	      }
       },
 	  
-      openClosePaTextField: function($ele) {
+      openClosePaTextField: function($ele, bool) {
 	      
 		  if (!$ele) { return; }
-		  
+          
+		  // if bool === true close fields unconditionally
+		  if (bool === true) {
+			  $ele
+				  .addClass('js-close')
+				  .removeClass('js-open');
+			  
+			  return;	  
+		  }
+		  // other cases		  
 		  if ($ele.hasClass('js-open') || !$ele.hasClass('js-close')) {
 			  $ele
 			      .addClass('js-close')
